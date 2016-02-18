@@ -23,7 +23,7 @@ private:
   
   static bool compare(Point * p1,Point *p2);
 
-  void triPoints(Ensemble & e);
+  void findHull(Ensemble & e);
 public:
   Graham(){};
   ~Graham(){};
@@ -34,6 +34,9 @@ public:
    * pour les points de l'ensemble.
    */
   virtual Ensemble traiter(std::vector<Point *> points);
+
+  virtual Ensemble removePoint(const Ensemble & e,unsigned int pos);
+
 };
 
 #endif // __GRAHAMS_HPP__

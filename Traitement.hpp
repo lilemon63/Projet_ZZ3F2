@@ -12,6 +12,7 @@ public:
   virtual ~Traitement();
   
   virtual Ensemble traiter(std::vector<Point *> points) = 0;
+  virtual Ensemble removePoint(const Ensemble & e,unsigned int pos) = 0;
   
 };
 

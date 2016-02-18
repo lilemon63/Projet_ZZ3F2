@@ -3,6 +3,7 @@
 #include <stack>
 #include <algorithm>
 #include <cmath>
+#include <list>
 
 #include "Graham.hpp"
 #include "Ensemble.hpp"
@@ -73,7 +74,7 @@ void showAngle(Point *p1, Point *p2, Point *p3, int o){
 	 << " Orientation : " << o << endl;
 }*/
 
-void Graham::triPoints(Ensemble & e){
+void Graham::findHull(Ensemble & e){
   // stack<Point *> pile;
   Ensemble ensEnv;
   //vector<Point *> env;
@@ -111,7 +112,6 @@ void Graham::triPoints(Ensemble & e){
 Ensemble Graham::traiter(vector<Point *> points){
   Ensemble e;//, result;
   vector<Point *> v;
-  
   for(Point * p : points){
     e.ensemble.push_back(p);
   }
@@ -119,19 +119,55 @@ Ensemble Graham::traiter(vector<Point *> points){
 
   selectionPivot(e);
   //v = triPoints(&e);
-  triPoints(e);
-  /*
-  for(unsigned int i = 0; i < v.size(); ++i){
-    e.hull.push_back(v[i]);
-    //result.addPoint(v[i]);
-  }
-  */
+  findHull(e);
   e.calculPerimetre();
-  /*
-  while (!pile.empty()){
-    result.addPoint(pile.top());
-    pile.pop();
-    }1
-  */
   return e;
+}
+
+int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double testy)
+{
+  int i, j, c = 0;
+  for (i = 0, j = nvert-1; i < nvert; j = i++) {
+    if ( ((verty[i]>testy) != (verty[j]>testy)) &&
+	 (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
+      c = !c;
+  }
+  return c;
+
+}
+
+Ensemble Graham::removePoint(const Ensemble & e, unsigned int pos){
+  Ensemble tmp = e;
+  
+  Point * prec, *suiv, * removed;
+  unsigned int posPrec, posSuiv;
+  double tabX[3], tabY[3];
+  
+  list<Point *> inTriangle;
+
+  posPrec = (pos == 0) ? e.hull.size() : pos-1;
+  posSuiv = (pos == e.hull.size()) ? 0 : pos+1;
+  
+  // On va constituer un triangle fait grace au point que l'on souhaite enlever, 
+  // Le précédent et le suivant.
+  prec = tmp.hull[posPrec];
+  suiv = tmp.hull[posSuiv];
+  removed = tmp.hull[pos];
+  tabX[0] = prec->x; tabX[1] = removed->x; tabX[2] = suiv->x;
+  tabY[0] = prec->y; tabY[1] = removed->y; tabY[2] = suiv->y;
+  inTriangle.push_back(prec);
+  for(Point * p : tmp.ensemble){
+    if(pointInPolygon(3, tabX,tabY, p->x, p->y)){
+      inTriangle.push_back(p);
+    }
+  }
+  inTriangle.push_back(suiv);
+  
+  // On enlève le point de l'enveloppe convexe.
+  tmp.hull.erase(tmp.hull.begin() + pos);
+  
+  // 
+  
+  
+  return tmp;
 }

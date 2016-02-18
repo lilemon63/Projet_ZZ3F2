@@ -28,7 +28,8 @@ private:
 public:
   static std::vector<Point *> points;
   
-  
+  Ensemble(const Ensemble & e);
+
   std::vector<Point *> ensemble;
   /**
    * @def hull
@@ -62,6 +63,8 @@ public:
   void calculPerimetre();
 
   double getPerimetre();  
+  
+  void setPerimetreToMax();
   
   Point * getFirst();
 };

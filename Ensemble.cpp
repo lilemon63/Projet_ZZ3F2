@@ -1,6 +1,10 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+#include <algorithm>
+#include <limits>
+#include <iostream>
+
 
 #include "Ensemble.hpp"
 
@@ -11,6 +15,12 @@ std::vector<Point *> Ensemble::points;
 Ensemble::Ensemble():perimetre(0){}
 
 Ensemble::~Ensemble(){}
+
+Ensemble::Ensemble(const Ensemble & e){
+  copy(e.ensemble.begin(), e.ensemble.end(), back_inserter(this->ensemble));
+  copy(e.hull.begin(), e.hull.end(), back_inserter(this->hull));
+  this->perimetre = e.perimetre;
+}
 
 std::ostream & operator<<(std::ostream & o, Ensemble e){
   
@@ -61,4 +71,8 @@ void Ensemble::calculPerimetre(){
     tmp += distance(hull[size-1],hull[0]); 
   }
   perimetre = tmp;
+}
+
+void Ensemble::setPerimetreToMax(){
+  perimetre = numeric_limits<double>::max();
 }
