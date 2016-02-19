@@ -1,6 +1,12 @@
-
+/**
+ * @file Front.hpp
+ * @brief Implémentation des fonctions utiles à faire le front pareto
+ * @author Damien Morel et Maxime Mikotajewski
+ */
+#include <iostream>
 #include "Front.hpp"
 
+using namespace std;
 Front::Front(Traitement * t):t(t){}
 Front::~Front(){}
 
@@ -16,14 +22,34 @@ void Front::setCurrent(Ensemble e){
 // Exploration de l'espace de manière à tout recouvrir, tout tester.
 void Front::removePoint(){
   unsigned int size = current.hull.size();
+  cerr << "size : " << size << "\n";
   if(size > 3){
+    cerr << "if\n";
     Ensemble best;
     best.setPerimetreToMax();
+    cerr << "best setted\n";
     for(unsigned int i = 0; i < size; ++i){
+      cerr << "iteration " << i << "\n";
       Ensemble tmp = t->removePoint(current, i);
-      //tmp.hull.remove(tmp.hull.begin() + i);
+      //cerr << "point removed\n";
+      if(tmp.getPerimetre() < best.getPerimetre()) 
+	best = tmp;
       
-      //remove tmp.hull[i]
     }
+    lstEnsemble.push_back(best);
+    current = best;
   }
+}
+
+void Front::showFront(){
+  cout << "showFront : \n";
+  for(const Ensemble & e : lstEnsemble){
+    cout << "nbPoints : " << e.ensemble.size() << "\n"
+	 << "ratio : " << (Ensemble::points.size() / (double) e.ensemble.size()) * 100 << "\n"
+	 << e;
+  }
+}
+
+void Front::globalHull(){
+  current = t->traiter(Ensemble::points);
 }

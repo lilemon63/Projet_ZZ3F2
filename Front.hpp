@@ -25,6 +25,8 @@ public:
   void setCurrent(Ensemble e);
 
   void removePoint();
+  void showFront();
+  void globalHull();
 };
 
 

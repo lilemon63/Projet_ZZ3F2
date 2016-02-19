@@ -9,13 +9,15 @@
 #include "Ensemble.hpp"
 #include "Point.hpp"
 
+
+#include "Front.hpp"
 #include "Traitement.hpp"
 #include "Graham.hpp"
 #include "LoaderPoint.hpp"
 
 using namespace std;
 
-
+/*
 int main(int, char **){  
   string filename = "data.txt";
   LoaderPoint loader;
@@ -25,8 +27,25 @@ int main(int, char **){
   Ensemble e;
   e = t->traiter(Ensemble::points);
   cout << e;
+
+  
   delete t;
   Ensemble::destroy();
   return 0;
-}
+}*/
 
+int main(int, char**){
+  string filename  = "data.txt";
+  LoaderPoint loader;
+  loader.loadFile(filename);
+ 
+  
+  Traitement *t = new Graham();
+  Front f(t);
+  f.globalHull();
+  f.removePoint();
+  f.showFront(); 
+  
+  Ensemble::destroy();
+  return 0;
+}
