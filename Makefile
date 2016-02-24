@@ -3,7 +3,7 @@
 # compilateur 
 CC = g++
 # options de compilation 
-CCFLAGS =-Wall -Wextra -ansi -pedantic -g -O2 -std=c++11
+CCFLAGS =-Wall -Wextra -ansi -pedantic -g -O2 -std=c++0x
 # options de l'edition des liens
 LDFLAGS =-lm
 # liste des fichiers objets 

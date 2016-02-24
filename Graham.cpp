@@ -138,7 +138,7 @@ int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double
 
 }
 
-Ensemble Graham::removePoint(const Ensemble & e, unsigned int pos){
+Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   Ensemble tmp = e;
   
   Point * prec, *suiv, * removed;

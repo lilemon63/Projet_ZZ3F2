@@ -35,7 +35,7 @@ public:
    */
   virtual Ensemble traiter(std::vector<Point *> points);
 
-  virtual Ensemble removePoint(const Ensemble & e,unsigned int pos);
+  virtual Ensemble removePoint(Ensemble & e,unsigned int pos);
 
 };
 
