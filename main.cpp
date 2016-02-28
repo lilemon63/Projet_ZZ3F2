@@ -14,7 +14,8 @@
 #include "Graham.hpp"
 #include "LoaderPoint.hpp"
 #include "SquareGenerator.hpp"
-
+#include "ParetoDisplay.hpp"
+#include "EnsembleDisplay.hpp"
 
 using namespace std;
 
@@ -45,16 +46,20 @@ int main(int, char**){
   // Graham hérite de Traitement.
   Traitement *t = new Graham();
 
-
+  
+  EnsembleDisplay dis(1600,900);
   Front f(t);
   
   cerr << "wtfman\t";
   f.globalHull();
   cerr << "\t </wtfman>";
+  dis.setCurrentSet(f.getCurrent());
+  dis.drawPoints();
+  /*
   f.showFront();
   f.removePoint();
   f.showFront(); 
- 
+  */
 
   Ensemble::destroy();
   return 0;

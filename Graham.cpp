@@ -169,7 +169,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   //inTriangle.push_back(suiv);
   
   tmp.hull.erase(tmp.hull.begin() + pos);
-  tmp.enveloppe.erase(tmp.hull.begin() + pos);
+  tmp.ensemble.erase(tmp.hull.begin() + pos);
   cerr << "yakoiladedan";
   for(Point * p : inTriangle){
     cerr << *p << "&";

@@ -27,6 +27,7 @@ public:
   void removePoint();
   void showFront();
   void globalHull();
+  Ensemble & getCurrent();
 };
 
 

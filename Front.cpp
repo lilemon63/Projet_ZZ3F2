@@ -55,3 +55,7 @@ void Front::globalHull(){
   current = t->traiter(Ensemble::points);
   lstEnsemble.push_back(current);
 }
+
+Ensemble & Front::getCurrent(){
+  return this->current;
+}
