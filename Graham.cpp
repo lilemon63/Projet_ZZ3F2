@@ -106,7 +106,6 @@ void Graham::findHull(Ensemble & e){
     }
   }
 
-  //return env;
 }
 
 Ensemble Graham::traiter(vector<Point *> points){
@@ -118,7 +117,7 @@ Ensemble Graham::traiter(vector<Point *> points){
 
 
   selectionPivot(e);
-  //v = triPoints(&e);
+
   findHull(e);
   e.calculPerimetre();
   return e;
@@ -127,7 +126,7 @@ Ensemble Graham::traiter(vector<Point *> points){
 int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double testy)
 {
   int i, j, c = 0;
-  cerr << "PointInPolygon : begin\n";
+  cerr << "PointInPolygon : begin ; point test : (" << testx << ";" << testy << ")\n";
   for (i = 0, j = nvert-1; i < nvert; j = i++) {
     if ( ((verty[i]>testy) != (verty[j]>testy)) &&
 	 (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
@@ -170,9 +169,13 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   //inTriangle.push_back(suiv);
   
   tmp.hull.erase(tmp.hull.begin() + pos);
+  tmp.enveloppe.erase(tmp.hull.begin() + pos);
+  cerr << "yakoiladedan";
+  for(Point * p : inTriangle){
+    cerr << *p << "&";
+  }
   if(inTriangle.size() < 1){
     cerr << "size < 1\n";
-    
   }
   else{
     cerr << "size >= 1\n";
@@ -183,16 +186,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
     //insert (const_iterator position, InputIterator first, InputIterator last);le.end());
    
   }
-  
-  /*single element (1)	
-iterator insert (iterator position, const value_type& val);
-fill (2)	
-    void insert (iterator position, size_type n, const value_type& val);
-range (3)	
-template <class InputIterator>
-    void insert (iterator position, InputIterator first, InputIterator last);
-*/
-  
+
   // On enlève le point de l'enveloppe convexe.
   tmp.hull.erase(tmp.hull.begin() + pos);
   

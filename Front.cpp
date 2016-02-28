@@ -47,9 +47,11 @@ void Front::showFront(){
     cout << "nbPoints : " << e.ensemble.size() << "\n"
 	 << "ratio : " << (Ensemble::points.size() / (double) e.ensemble.size()) * 100 << "\n"
 	 << e;
-  }
+    }
+  cout << "endFront\n";
 }
 
 void Front::globalHull(){
   current = t->traiter(Ensemble::points);
+  lstEnsemble.push_back(current);
 }

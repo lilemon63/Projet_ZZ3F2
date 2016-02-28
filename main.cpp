@@ -35,7 +35,7 @@ int main(int, char **){
   return 0;
 }*/
 
-/*
+
 int main(int, char**){
   string filename  = "data.txt";
   LoaderPoint loader;
@@ -48,18 +48,19 @@ int main(int, char**){
 
   Front f(t);
   
-  
+  cerr << "wtfman\t";
   f.globalHull();
+  cerr << "\t </wtfman>";
+  f.showFront();
   f.removePoint();
   f.showFront(); 
  
 
-  // delete t; ? 
   Ensemble::destroy();
   return 0;
 }
-*/
 
+/*
 int main(int, char**)
 {
 	SquareGenerator generator(12);
@@ -72,3 +73,4 @@ int main(int, char**)
 		cout << *(*it) << endl;
 	}
 }
+*/
