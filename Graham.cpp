@@ -16,16 +16,17 @@ Point * Graham::pivot;
 void Graham::selectionPivot(Ensemble & e){
   
   pivot = e.getFirst();
-  vector<Point *>::iterator ptr_pivot; //= e.getEnsemble().begin();
+  //vector<Point *>::iterator ptr_pivot; //= e.getEnsemble().begin();
   // On prends le point avec l'ordonnée la plus basse.
   // Si plusieurs points on l'ordonnée la plus basse, on selectionne alors l'abscisse
-  for(vector<Point*>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
+  for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
     
-    Point * p = *it;
-
+    Point * p = Ensemble::points[*it];
+    
     if( p->y < pivot->y || (p->y == pivot->y && p->x < pivot->x)){ // en bas à gauche
       pivot = p;
-      ptr_pivot = it;
+      posPivot = *it;
+      // ptr_pivot = it;
     }
     
   }
@@ -49,7 +50,7 @@ int Graham::getOrientation(Point *p, Point *q, Point *r){
   return (prodVect > 0) ? 1 : -1;
 }
 
-bool Graham::compare(Point * p1,Point * p2){
+bool Graham::compare(unsigned int pos1,unsigned int pos2){
   /*
   Point * p1 = *(Point **)vp1;
   Point * p2 = *(Point **)vp2;
@@ -61,6 +62,10 @@ bool Graham::compare(Point * p1,Point * p2){
   
   return false;
   */
+  
+  Point * p1, * p2;
+  p1 = Ensemble::points[pos1];
+  p2 = Ensemble::points[pos2];
   double result =  atan2(p1->x, p1->y) - atan2(p2->x,p2->y);
   return 
     result == 0 ? (p1->x > p2->x ? true : false ) : 
@@ -78,7 +83,7 @@ void Graham::findHull(Ensemble & e){
   // stack<Point *> pile;
   Ensemble ensEnv;
   //vector<Point *> env;
-  vector<Point *> v;
+  vector<unsigned int> v;
   // Le pivot est insérré au début et à la fin
  
   // Trier les points par angle (les points d'angle égal seront triés par rapport à leur abscisse)
@@ -89,7 +94,7 @@ void Graham::findHull(Ensemble & e){
   //env = ensEnv.getEnsemble();
   
   //env.push_back(pivot);
-  v.push_back(pivot);
+  v.push_back(posPivot);
   //env.push_back(v[0]);
   e.hull.push_back(v[0]);
   //pile.push(pivot);
@@ -100,7 +105,10 @@ void Graham::findHull(Ensemble & e){
   for(unsigned int i = 1; i < v.size()-1; ++i){
     
     int s = e.hull.size();
-    int o = getOrientation(e.hull[s-1], v[i], v[i+1]);
+    int o = getOrientation(
+			   Ensemble::points[e.hull[s-1]], 
+			   Ensemble::points[v[i]], 
+			   Ensemble::points[v[i+1]]);
     if(o < 1){
       e.hull.push_back(v[i]);
     }
@@ -108,10 +116,11 @@ void Graham::findHull(Ensemble & e){
 
 }
 
-Ensemble Graham::traiter(vector<Point *> points){
+Ensemble Graham::traiter(vector<unsigned int> points){
   Ensemble e;//, result;
-  vector<Point *> v;
-  for(Point * p : points){
+  vector<unsigned int> v;
+  
+  for(unsigned int p : points){
     e.ensemble.push_back(p);
   }
 
@@ -161,19 +170,23 @@ int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double
 
 
 Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
+  
   Ensemble tmp = e;
-
   Point * prec, *suiv, * removed;
   unsigned int posPrec, posSuiv;
-  double tabX[3], tabY[3];
-  vector<Point *>::iterator posInEnsemble;
   
-  vector<Point *> inTriangle;
+  double tabX[3], tabY[3];
+  
+  vector<unsigned int>::iterator posInEnsemble;
+  vector<unsigned int> inTriangle;
+  
   cerr << "removePoint begin\n";
+  
   posPrec = (pos == 0) ? e.hull.size()-1 : pos-1;
   posSuiv = (pos == e.hull.size()) ? 0 : pos+1;
   
-  for(auto it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
+  
+  for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
     if( (*it) == tmp.hull[pos]){
       posInEnsemble = it;
     }
@@ -181,17 +194,21 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
 
   // On va constituer un triangle fait grace au point que l'on souhaite enlever, 
   // Le précédent et le suivant.
-  prec = tmp.hull[posPrec];
-  suiv = tmp.hull[posSuiv];
-  removed = tmp.hull[pos];
+  prec = Ensemble::points[posPrec];//tmp.hull[posPrec];
+  suiv = Ensemble::points[posSuiv];//tmp.hull[posSuiv];
+  
+  removed = Ensemble::points[pos];
+  //removed = tmp.hull[pos];
   cerr << "indices : " << posPrec << " ; " << pos << " ; " << posSuiv << "\n";
   cerr << "init des variables : " << *prec << " ; " << *removed << ";" << *suiv << "\n";
   tabX[0] = prec->x; tabX[1] = removed->x; tabX[2] = suiv->x;
   tabY[0] = prec->y; tabY[1] = removed->y; tabY[2] = suiv->y;
   //inTriangle.push_back(prec);
   
-
-  for(Point * p : tmp.ensemble){
+  
+  for(unsigned int pos : tmp.ensemble){
+    Point * p = Ensemble::points[pos];
+    
     if(pointInPolygon(3, tabX,tabY, p->x, p->y) && pointNotInVector(inTriangle,p)){
       inTriangle.push_back(p);
       cerr << "Point added inTriangle : " << *p << "\n";
@@ -213,6 +230,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
     //vector<Point * >::const_iterator it = e.hull.begin();// + pos+1;
     auto it = e.hull.begin();
     //it += pos +1;
+    
     e.hull.insert(it+pos, inTriangle.begin(), inTriangle.end());//, inTriangle.end());
     //insert (const_iterator position, InputIterator first, InputIterator last);le.end());
    

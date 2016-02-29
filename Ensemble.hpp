@@ -30,12 +30,12 @@ public:
   
   Ensemble(const Ensemble & e);
 
-  std::vector<Point *> ensemble;
+  std::vector<unsigned int> ensemble;
   /**
    * @def hull
    * @brief L'ensemble des points appartenant à l'enveloppe convexe
    */
-  std::vector<Point *> hull;
+  std::vector<unsigned int> hull;
   /**
    * @brief 
    * Détruit l'ensemble des points

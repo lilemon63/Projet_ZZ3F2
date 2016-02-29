@@ -36,13 +36,14 @@ Ensemble Ensemble::operator=(Ensemble e){
 std::ostream & operator<<(std::ostream & o, Ensemble e){
   
   o << "Affichage de l'ensemble : \n";
-  for(const Point * i : e.ensemble){
-    o << *i << "\n";
+  for(const unsigned int i : e.ensemble){
+    
+    o << *(Ensemble::points[i]) << "\n";
   }
   o << "Affichage de l'enveloppe convexe :\n";
   
-  for(const Point * i : e.hull){
-    o << *i << "\n";
+  for(const unsigned int i : e.hull){
+    o << *(Ensemble::points[i]) << "\n";
   }
   o << "perimètre : " << e.getPerimetre() << "\n";
   return o;
@@ -57,7 +58,7 @@ void Ensemble::destroy(){
 Point * Ensemble::getFirst(){
   Point * tmp = 0;
   if(ensemble.size() > 1){
-    tmp = ensemble[0];
+    tmp = points[ensemble[0]];
   }
   return tmp;
 }
@@ -76,10 +77,10 @@ void Ensemble::calculPerimetre(){
   unsigned int size = hull.size();
   if(size > 3){ // Si on a au moins trois points
     for(unsigned int i = 1; i < size; ++i){ 
-      tmp += distance(hull[i-1],hull[i]);
+      tmp += distance(points[hull[i-1]],points[hull[i]]);
     }  
     // On boucle à la fin
-    tmp += distance(hull[size-1],hull[0]); 
+    tmp += distance(points[hull[size-1]],points[hull[0]]); 
   }
   perimetre = tmp;
 }

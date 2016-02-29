@@ -41,8 +41,14 @@ void EnsembleDisplay::drawConvexHull()
 	{
 	  //cerr << "ligne : "
 	  
-		p1=toDisplayableCoordinates(*(*current).hull[i%(current->hull.size())]);		
-		p2=toDisplayableCoordinates(*(*current).hull[(i+1)%(current->hull.size())]);
+	  p1=toDisplayableCoordinates(*(Ensemble::points[
+							 (*current).hull[i%(current->hull.size())]
+							 ]
+				      ));		
+	  p2=toDisplayableCoordinates(*(Ensemble::points[
+							 (*current).hull[(i+1)%(current->hull.size())]
+							 ]
+					));
 		img.draw_line(p1.x,p1.y,p2.x,p2.y,red);
 	}
 	delete[] red;
@@ -57,7 +63,10 @@ void EnsembleDisplay::drawPoints()
 	for(unsigned int i=0;i!=(*current).ensemble.size();++i)
 	{
 
-		p=toDisplayableCoordinates(*(*current).ensemble[i]);
+	  p=toDisplayableCoordinates(*(Ensemble::points[
+							(*current).ensemble[i]
+							]
+				       ));
 		img.draw_point(p.x,p.y,0,red);
 		//		cout << _displayPoints(i,0) << " " << _displayPoints(i,1) << endl;
 		//		img.draw_line(_displayPoints(i-1,0),_displayPoints(i-1,1),
@@ -74,15 +83,16 @@ void EnsembleDisplay::setCurrentSet(Ensemble& e)
 {
 	_xMax=0; _yMax=0;
 	current=&e;
-	for(vector<Point*>::iterator it = e.ensemble.begin(); it != e.ensemble.end();++it)
-	{
-		if(std::abs((*it)->x) > _xMax)
+	for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end();++it)
+	  {
+	    Point * tmp = Ensemble::points[ *it ];
+		if(std::abs(tmp->x) > _xMax)
 		{
-			_xMax = std::abs((*it)->x);
+			_xMax = std::abs(tmp->x);
 		}
-		if(std::abs((*it)->y) > _yMax)
+		if(std::abs(tmp->y) > _yMax)
 		{
-			_yMax = std::abs((*it)->y);
+			_yMax = std::abs(tmp->y);
 		}
 	}
 }

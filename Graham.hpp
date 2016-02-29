@@ -17,11 +17,12 @@ private:
   void selectionPivot(Ensemble &e);
 
   static Point * pivot;
-
+  static unsigned int posPivot;
+  
   double produitVectoriel(Point * p1, Point * p2, Point * p3);
   int getOrientation(Point * p, Point *q, Point * r );
   
-  static bool compare(Point * p1,Point *p2);
+  static bool compare(unsigned int pos1,unsigned int pos2);
 
   void findHull(Ensemble & e);
 public:
@@ -33,9 +34,10 @@ public:
    * Effectue le calcule d'une enveloppe convexe en utilisant l'alorithme de Graham
    * pour les points de l'ensemble.
    */
-  virtual Ensemble traiter(std::vector<Point *> points);
+  virtual Ensemble traiter(std::vector<unsigned int> points);
 
   virtual Ensemble removePoint(Ensemble & e,unsigned int pos);
+
 
 };
 
