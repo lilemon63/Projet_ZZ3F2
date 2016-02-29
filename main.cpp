@@ -48,19 +48,30 @@ int main(int, char**){
 
   
   EnsembleDisplay dis(1600,900);
+  //EnsembleDisplay  dis2(1600,900);
+  
   Front f(t);
   
-  cerr << "wtfman\t";
+  //cerr << "wtfman\t";
   f.globalHull();
-  cerr << "\t </wtfman>";
-  dis.setCurrentSet(f.getCurrent());
+  //cerr << "\t </wtfman>";
+  //f.showFront();
+  //dis.setCurrentSet(f.getCurrent());
+  
+  //dis.drawPoints();
+  //dis.drawConvexHull();
+  f.removePoint();
+  
   dis.drawPoints();
+  dis.drawConvexHull();
+  //dis2.setCurrentSet(f.getCurrent());
+  //dis2.drawConvexHull();
   /*
   f.showFront();
   f.removePoint();
   f.showFront(); 
   */
-
+  delete t;
   Ensemble::destroy();
   return 0;
 }

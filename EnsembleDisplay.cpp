@@ -6,6 +6,7 @@
 
 #include <cmath>
 
+
 using namespace std;
 
 using namespace cimg_library;
@@ -21,7 +22,7 @@ Point EnsembleDisplay::toDisplayableCoordinates(const Point& point)
 	return nPoint;
 }
 
-	EnsembleDisplay::EnsembleDisplay(int width, int height):current(NULL),_xMax(0),_yMax(0),
+EnsembleDisplay::EnsembleDisplay(int width, int height):current(NULL),_xMax(0),_yMax(0),
 								img(width+10,height+10,1,3),_height(height),_width(width)
 {
 }
@@ -32,22 +33,24 @@ EnsembleDisplay::~EnsembleDisplay()
 
 void EnsembleDisplay::drawConvexHull()
 {
+  drawPoints();
 	float* red = new float[3]; // {1.f,0.f,0.f};
-	red[0]=1.f; red[1]=0.f; red[2]=0.f;
+	red[0]=1.f; red[1]=1.f; red[2]=1.f;
 	Point p1,p2;
 	for(unsigned int i=0;i<current->hull.size();++i)
 	{
+	  //cerr << "ligne : "
+	  
 		p1=toDisplayableCoordinates(*(*current).hull[i%(current->hull.size())]);		
 		p2=toDisplayableCoordinates(*(*current).hull[(i+1)%(current->hull.size())]);
 		img.draw_line(p1.x,p1.y,p2.x,p2.y,red);
 	}
-	img.display();
 	delete[] red;
+	img.display();
 }
 
 void EnsembleDisplay::drawPoints()
 {
-
 	float* red = new float[3]; // {1.f,0.f,0.f};
 	red[0]=1.f; red[1]=0.f; red[2]=0.f;
 	Point p;
@@ -62,8 +65,8 @@ void EnsembleDisplay::drawPoints()
 		//		red);
 	}
 	//	img.draw_line(0,_height-10,_displayPoints(_nbPoints-1,0),_displayPoints(_nbPoints-1,1),red).display();
-	img.display();
-	delete [] red;	
+	delete [] red;  
+	//img.display();
 }
 
 
@@ -73,7 +76,6 @@ void EnsembleDisplay::setCurrentSet(Ensemble& e)
 	current=&e;
 	for(vector<Point*>::iterator it = e.ensemble.begin(); it != e.ensemble.end();++it)
 	{
-		// Mettre en valeur absolue
 		if(std::abs((*it)->x) > _xMax)
 		{
 			_xMax = std::abs((*it)->x);

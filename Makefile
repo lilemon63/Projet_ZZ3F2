@@ -18,7 +18,7 @@ CCPP=g++
 CFLAGS=-Wall -ansi -pedantic -ffast-math -I /usr/X11R6/include -I ./CImg -g -std=c++0x
 
 
-LFLAGS= -L . -L /usr/X11R6/lib  -lpthread -lX11 -Dcimg_use_xshm  -lm
+LFLAGS= -L . -L /usr/X11R6/lib  -lpthread -lX11 -Dcimg_use_xshm  -lm 
 #-lXext
 #R�le explicite de construction de l'ex�utable
 $(EXEC):$(OBJETS) Makefile

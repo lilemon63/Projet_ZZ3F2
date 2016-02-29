@@ -22,6 +22,17 @@ Ensemble::Ensemble(const Ensemble & e){
   this->perimetre = e.perimetre;
 }
 
+
+Ensemble Ensemble::operator=(Ensemble e){
+  if(this != &e){
+    
+    copy(e.ensemble.begin(), e.ensemble.end(), back_inserter(this->ensemble));
+    copy(e.hull.begin(), e.hull.end(), back_inserter(this->hull));
+    this->perimetre = e.perimetre;
+  }
+  return *this;
+}
+
 std::ostream & operator<<(std::ostream & o, Ensemble e){
   
   o << "Affichage de l'ensemble : \n";

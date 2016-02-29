@@ -67,6 +67,8 @@ public:
   void setPerimetreToMax();
   
   Point * getFirst();
+  
+  Ensemble operator=(Ensemble e);
 };
 
 

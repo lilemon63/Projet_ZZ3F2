@@ -123,32 +123,62 @@ Ensemble Graham::traiter(vector<Point *> points){
   return e;
 }
 
+/*
 int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double testy)
 {
   int i, j, c = 0;
-  cerr << "PointInPolygon : begin ; point test : (" << testx << ";" << testy << ")\n";
   for (i = 0, j = nvert-1; i < nvert; j = i++) {
     if ( ((verty[i]>testy) != (verty[j]>testy)) &&
 	 (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
       c = !c;
   }
-  cerr << "PointInPolygon : end\n";
   return c;
 
+}*/
+
+int pointNotInVector(const vector<Point * >  & v, const Point * e) {
+  int res = 0;
+  
+  for(Point * p : v){
+    if(p->x == e->x && p->y == e->y) {res = 1;}
+  }
+  
+  return res;
 }
+
+int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double testy) 
+{
+  int i, j, c = 0;
+  for (i = 0, j = nvert-1; i < nvert; j = i++) {
+    if ((((verty[i] <= testy) && (testy < verty[j])) ||
+	 ((verty[j] <= testy) && (testy < verty[i]))) &&
+	(testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i]))
+      c = !c;
+  }
+  return c;
+}
+
+
 
 Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   Ensemble tmp = e;
-  
+
   Point * prec, *suiv, * removed;
   unsigned int posPrec, posSuiv;
   double tabX[3], tabY[3];
+  vector<Point *>::iterator posInEnsemble;
   
   vector<Point *> inTriangle;
   cerr << "removePoint begin\n";
   posPrec = (pos == 0) ? e.hull.size()-1 : pos-1;
   posSuiv = (pos == e.hull.size()) ? 0 : pos+1;
   
+  for(auto it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
+    if( (*it) == tmp.hull[pos]){
+      posInEnsemble = it;
+    }
+  }
+
   // On va constituer un triangle fait grace au point que l'on souhaite enlever, 
   // Le précédent et le suivant.
   prec = tmp.hull[posPrec];
@@ -162,18 +192,19 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   
 
   for(Point * p : tmp.ensemble){
-    if(pointInPolygon(3, tabX,tabY, p->x, p->y)){
+    if(pointInPolygon(3, tabX,tabY, p->x, p->y) && pointNotInVector(inTriangle,p)){
       inTriangle.push_back(p);
+      cerr << "Point added inTriangle : " << *p << "\n";
     }
   }
   //inTriangle.push_back(suiv);
+  //tmp.ensemble.erase(tmp.hull.begin() + pos);
   
-  tmp.hull.erase(tmp.hull.begin() + pos);
-  tmp.ensemble.erase(tmp.hull.begin() + pos);
-  cerr << "yakoiladedan";
+  //cerr << "";
   for(Point * p : inTriangle){
     cerr << *p << "&";
   }
+
   if(inTriangle.size() < 1){
     cerr << "size < 1\n";
   }
@@ -188,11 +219,16 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   }
 
   // On enlève le point de l'enveloppe convexe.
-  tmp.hull.erase(tmp.hull.begin() + pos);
+  //tmp.hull.erase(tmp.hull.begin() + pos);
   
   // 
   
-  
+  cerr << "ça plante ici ?\n";
+  tmp.hull.erase(tmp.hull.begin() + pos);
+  cerr << "poInEnsemble :" << *posInEnsemble << "\n";
+  tmp.ensemble.erase(posInEnsemble);
+  cerr << "hull erased\n";
+  cerr << tmp;
   cerr << "removePoint end\n";
   return tmp;
 }

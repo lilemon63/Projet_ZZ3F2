@@ -28,14 +28,15 @@ void Front::removePoint(){
     Ensemble best;
     best.setPerimetreToMax();
     cerr << "best setted\n";
-    for(unsigned int i = 0; i < size; ++i){
+    unsigned int i = 0;
+      //for(unsigned int i = 0; i < size; ++i){
       cerr << "iteration " << i << "\n";
       Ensemble tmp = t->removePoint(current, i);
       //cerr << "point removed\n";
       if(tmp.getPerimetre() < best.getPerimetre()) 
 	best = tmp;
       
-    }
+      //}
     lstEnsemble.push_back(best);
     current = best;
   }
