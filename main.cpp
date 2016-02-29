@@ -19,24 +19,6 @@
 
 using namespace std;
 
-/*
-int main(int, char **){  
-  string filename = "data.txt";
-  LoaderPoint loader;
-  loader.loadFile(filename);
-  
-  Traitement * t = new Graham();
-  Ensemble e;
-  e = t->traiter(Ensemble::points);
-  cout << e;
-
-  
-  delete t;
-  Ensemble::destroy();
-  return 0;
-}*/
-
-
 int main(int, char**){
   string filename  = "data.txt";
   LoaderPoint loader;
@@ -52,25 +34,20 @@ int main(int, char**){
   
   Front f(t);
   
-  //cerr << "wtfman\t";
   f.globalHull();
-  //cerr << "\t </wtfman>";
-  //f.showFront();
+  f.showFront();
   //dis.setCurrentSet(f.getCurrent());
   
   //dis.drawPoints();
   //dis.drawConvexHull();
+  
   f.removePoint();
   
-  dis.drawPoints();
-  dis.drawConvexHull();
-  //dis2.setCurrentSet(f.getCurrent());
-  //dis2.drawConvexHull();
-  /*
   f.showFront();
-  f.removePoint();
-  f.showFront(); 
-  */
+  
+  dis.setCurrentSet(f.getCurrent());
+  dis.drawConvexHull();
+  
   delete t;
   Ensemble::destroy();
   return 0;

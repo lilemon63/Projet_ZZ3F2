@@ -11,6 +11,7 @@
 using namespace std;
 
 std::vector<Point *> Ensemble::points;
+std::vector<unsigned int> Ensemble::posPoints;
 
 Ensemble::Ensemble():perimetre(0){}
 
@@ -75,7 +76,8 @@ double Ensemble::distance(Point * p1, Point * p2){
 void Ensemble::calculPerimetre(){
   double tmp = 0;
   unsigned int size = hull.size();
-  if(size > 3){ // Si on a au moins trois points
+  
+  if(size >= 3){ // Si on a au moins trois points
     for(unsigned int i = 1; i < size; ++i){ 
       tmp += distance(points[hull[i-1]],points[hull[i]]);
     }  
@@ -87,4 +89,9 @@ void Ensemble::calculPerimetre(){
 
 void Ensemble::setPerimetreToMax(){
   perimetre = numeric_limits<double>::max();
+}
+
+void Ensemble::addPoint(Point *p){
+  points.push_back(p);
+  posPoints.push_back(points.size() - 1);
 }

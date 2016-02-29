@@ -1,4 +1,3 @@
-
 #include "CImg.h"
 #include "Point.hpp"
 #include "Ensemble.hpp"

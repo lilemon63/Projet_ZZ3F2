@@ -19,12 +19,11 @@ void Front::setCurrent(Ensemble e){
   current = e ;
 }
 
-// Exploration de l'espace de manière à tout recouvrir, tout tester.
+// Exploration de l'espace 
 void Front::removePoint(){
   unsigned int size = current.hull.size();
   cerr << "size : " << size << "\n";
   if(size > 3){
-    cerr << "if\n";
     Ensemble best;
     best.setPerimetreToMax();
     cerr << "best setted\n";
@@ -48,13 +47,17 @@ void Front::showFront(){
     cout << "nbPoints : " << e.ensemble.size() << "\n"
 	 << "ratio : " << (Ensemble::points.size() / (double) e.ensemble.size()) * 100 << "\n"
 	 << e;
-    }
+  }
   cout << "endFront\n";
 }
 
-void Front::globalHull(){
-  current = t->traiter(Ensemble::points);
+
+
+void Front::globalHull(){  
+  
+  current = t->traiter(Ensemble::posPoints);
   lstEnsemble.push_back(current);
+  
 }
 
 Ensemble & Front::getCurrent(){

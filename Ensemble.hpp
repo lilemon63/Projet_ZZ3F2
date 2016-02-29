@@ -27,6 +27,7 @@ private:
   double distance(Point * p1, Point * p2);
 public:
   static std::vector<Point *> points;
+  static std::vector<unsigned int> posPoints;
   
   Ensemble(const Ensemble & e);
 
@@ -69,6 +70,8 @@ public:
   Point * getFirst();
   
   Ensemble operator=(Ensemble e);
+  
+  static void addPoint(Point * p);
 };
 
 
