@@ -23,21 +23,33 @@ void Front::setCurrent(Ensemble e){
 void Front::removePoint(){
   unsigned int size = current.hull.size();
   cerr << "size : " << size << "\n";
+  
   if(size > 3){
+    
     Ensemble best;
     best.setPerimetreToMax();
     cerr << "best setted\n";
+    //for(unsigned int i = 0; i < lstEnsemble.size() -1; ++i){
     unsigned int i = 0;
-      //for(unsigned int i = 0; i < size; ++i){
+    //for(unsigned int i = 0; i < 2; ++i){
       cerr << "iteration " << i << "\n";
       Ensemble tmp = t->removePoint(current, i);
       //cerr << "point removed\n";
-      if(tmp.getPerimetre() < best.getPerimetre()) 
+      if(tmp.getPerimetre() < best.getPerimetre() ||
+	 (tmp.getPerimetre() == best.getPerimetre() && tmp.getRatio() > best.getRatio()) ){
+	best.ensemble.clear();
+	best.hull.clear();
 	best = tmp;
       
+      }
+      lstEnsemble.push_back(best);
       //}
-    lstEnsemble.push_back(best);
+    cerr << "BEST DANS FRONT " << best << "FINBESTFRONTTOUSSA\n";
+    cerr << "current before affectation " << current << "fincurrentetc\n";
+    current.ensemble.clear();
+    current.hull.clear();
     current = best;
+    cerr << "LAST : " << current << "FINLAST\n";
   }
 }
 
@@ -45,7 +57,7 @@ void Front::showFront(){
   cout << "showFront : \n";
   for(const Ensemble & e : lstEnsemble){
     cout << "nbPoints : " << e.ensemble.size() << "\n"
-	 << "ratio : " << (Ensemble::points.size() / (double) e.ensemble.size()) * 100 << "\n"
+	 << "ratio : " << e.getRatio() << "\n"
 	 << e;
   }
   cout << "endFront\n";

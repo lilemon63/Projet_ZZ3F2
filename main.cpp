@@ -43,9 +43,11 @@ int main(int, char**){
   
   f.removePoint();
   
-  f.showFront();
+  //f.showFront();
   
+  //cerr << "current à la fin : "<<    f.getCurrent() << "voilà\n";
   dis.setCurrentSet(f.getCurrent());
+  
   dis.drawConvexHull();
   
   delete t;

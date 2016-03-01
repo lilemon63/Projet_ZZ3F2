@@ -26,7 +26,6 @@ Ensemble::Ensemble(const Ensemble & e){
 
 Ensemble Ensemble::operator=(Ensemble e){
   if(this != &e){
-    
     copy(e.ensemble.begin(), e.ensemble.end(), back_inserter(this->ensemble));
     copy(e.hull.begin(), e.hull.end(), back_inserter(this->hull));
     this->perimetre = e.perimetre;
@@ -48,6 +47,10 @@ std::ostream & operator<<(std::ostream & o, Ensemble e){
   }
   o << "perimètre : " << e.getPerimetre() << "\n";
   return o;
+}
+
+double Ensemble::getRatio() const {
+  return ensemble.size()/(double) Ensemble::points.size() * 100;
 }
 
 void Ensemble::destroy(){

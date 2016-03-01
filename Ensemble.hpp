@@ -69,6 +69,8 @@ public:
   
   Point * getFirst();
   
+  double getRatio() const;
+
   Ensemble operator=(Ensemble e);
   
   static void addPoint(Point * p);
