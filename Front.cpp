@@ -21,16 +21,16 @@ void Front::setCurrent(Ensemble e){
 
 // Exploration de l'espace 
 void Front::removePoint(){
-  unsigned int size = current.hull.size();
-  cerr << "size : " << size << "\n";
+  unsigned int sizeHull = current.hull.size() -1;
+  cerr << "size : " << sizeHull << "\n";
   
-  if(size > 3){
+  if(current.ensemble.size() > 3){
     
     Ensemble best;
     best.setPerimetreToMax();
     cerr << "best setted\n";
-    //for(unsigned int i = 0; i < lstEnsemble.size() -1; ++i){
-    unsigned int i = 0;
+    for(unsigned int i = 0; i < sizeHull; ++i){
+    //unsigned int i = 1;
     //for(unsigned int i = 0; i < 2; ++i){
       cerr << "iteration " << i << "\n";
       Ensemble tmp = t->removePoint(current, i);
@@ -40,18 +40,27 @@ void Front::removePoint(){
 	best.ensemble.clear();
 	best.hull.clear();
 	best = tmp;
-      
       }
       lstEnsemble.push_back(best);
-      //}
-    cerr << "BEST DANS FRONT " << best << "FINBESTFRONTTOUSSA\n";
-    cerr << "current before affectation " << current << "fincurrentetc\n";
+      }
     current.ensemble.clear();
     current.hull.clear();
     current = best;
-    cerr << "LAST : " << current << "FINLAST\n";
   }
+  
 }
+
+void Front::constructionFirstPareto(){
+  
+  while(current.ensemble.size() > 3){
+    removePoint();
+    }
+  /*
+  for(unsigned int i = 0; i < 5; ++i) 
+  removePoint();*/
+  
+}
+
 
 void Front::showFront(){
   cout << "showFront : \n";
@@ -65,6 +74,7 @@ void Front::showFront(){
 
 
 
+
 void Front::globalHull(){  
   
   current = t->traiter(Ensemble::posPoints);
@@ -74,4 +84,16 @@ void Front::globalHull(){
 
 Ensemble & Front::getCurrent(){
   return this->current;
+}
+
+int Front::getParetoSize() const{
+  return lstEnsemble.size();
+}
+
+vector<Point> Front::getParetoPoints(){
+  vector<Point> v;
+  for(Ensemble e : lstEnsemble){
+    v.push_back(Point(e.getRatio(),e.getPerimetre())); 
+  }
+  return v;
 }

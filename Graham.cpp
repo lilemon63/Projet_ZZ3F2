@@ -127,12 +127,15 @@ Ensemble Graham::traiter(vector<unsigned int> points){
   return e;
 }
 
-int pointNotInVector(const vector<unsigned int>  & v, const Point * e) {
+int pointInVector(const Point * e ,const vector<unsigned int>  & v) {
   int res = 0;
   
   for(unsigned int i : v){
     Point * p = Ensemble::points[i];
-    if(p->x == e->x && p->y == e->y) {res = 1;}
+    
+    if(p == e){
+      res = 1;
+    }
   }
   
   return res;
@@ -196,9 +199,10 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   for(unsigned int pos : tmp.ensemble){
     Point * p = Ensemble::points[pos];
     
-    if(pointInPolygon(3, tabX,tabY, p->x, p->y) && pointNotInVector(inTriangle,p)){
+    if(!pointInVector(p,inTriangle) &&
+       !pointInVector(p,e.hull) &&
+       pointInPolygon(3, tabX,tabY, p->x, p->y) ){
       inTriangle.push_back(pos);
-      cerr << "Point added inTriangle : " << *p << "\n";
     }
   }
   //inTriangle.push_back(suiv);
@@ -210,24 +214,27 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
     cerr << *p << "&";
     }*/
 
+  tmp.hull.erase(tmp.hull.begin() + pos);
   if(inTriangle.size() < 1){
     cerr << "size < 1\n";
   }
   else{
     cerr << "size >= 1\n";
-    auto it = e.hull.begin();
+    //auto it = tmp.hull.begin();
     
-    e.hull.insert(it+pos, inTriangle.begin(), inTriangle.end());//, inTriangle.end());
+    tmp.hull.insert(tmp.hull.begin()+pos, inTriangle.begin(), inTriangle.end());//, inTriangle.end());
   }
   
-  cerr << "ça plante ici ?\n";
-  tmp.hull.erase(tmp.hull.begin() + pos);
+
+  //tmp.hull.erase(tmp.hull.begin() + pos);
+    cerr << "graham remove after erase : " << tmp <<"\n";
+  
+  /*
   cerr << "poInEnsemble :" << posInEnsemble << "\n";
   cerr << "point supprimé : " << Ensemble::points[* (tmp.ensemble.begin() + posInEnsemble)] << "oupa\n";
+  */
   tmp.ensemble.erase(tmp.ensemble.begin() + posInEnsemble);
-  cerr << "hull erased\n";
-  cerr << tmp;
-  cerr << "removePoint end\n";
+  
   tmp.calculPerimetre();//calculerPerimetre();
   return tmp;
 }

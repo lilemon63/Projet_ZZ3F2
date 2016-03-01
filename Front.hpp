@@ -17,6 +17,9 @@ private:
   Traitement * t;
   Ensemble current;
   std::list<Ensemble> lstEnsemble;
+
+
+
 public:
   Front(Traitement * t);
   ~Front();
@@ -28,6 +31,12 @@ public:
   void showFront();
   void globalHull();
   Ensemble & getCurrent();
+  
+  int getParetoSize() const;
+  
+  void constructionFirstPareto();
+  
+  std::vector<Point> getParetoPoints();
 };
 
 

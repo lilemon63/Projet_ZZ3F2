@@ -35,20 +35,36 @@ int main(int, char**){
   Front f(t);
   
   f.globalHull();
-  f.showFront();
+  //f.showFront();
   //dis.setCurrentSet(f.getCurrent());
   
   //dis.drawPoints();
   //dis.drawConvexHull();
   
-  f.removePoint();
   
-  //f.showFront();
+  //f.removePoint();
+  f.constructionFirstPareto();
+  f.showFront();
   
+  
+  ParetoDisplay p(f.getParetoSize(), 1600,900);
+  
+  vector<Point> v = f.getParetoPoints();
+  
+  for(Point point : v){
+    p.addPoint(&point);
+  }
+  
+  p.drawParetoFront();
+  /*
+  p.addPoint();
+  p.addPoint();
+  p.addPoint();
+  */
   //cerr << "current à la fin : "<<    f.getCurrent() << "voilà\n";
-  dis.setCurrentSet(f.getCurrent());
+  //dis.setCurrentSet(f.getCurrent());
   
-  dis.drawConvexHull();
+  //dis.drawConvexHull();
   
   delete t;
   Ensemble::destroy();
