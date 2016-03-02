@@ -37,6 +37,7 @@ public:
    * @brief L'ensemble des points appartenant à l'enveloppe convexe
    */
   std::vector<unsigned int> hull;
+
   /**
    * @brief 
    * Détruit l'ensemble des points
@@ -72,6 +73,7 @@ public:
   double getRatio() const;
 
   Ensemble operator=(Ensemble e);
+  void getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned int * p2);
   
   static void addPoint(Point * p);
 };

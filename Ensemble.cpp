@@ -98,3 +98,28 @@ void Ensemble::addPoint(Point *p){
   points.push_back(p);
   posPoints.push_back(points.size() - 1);
 }
+
+
+void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned int * p2){
+  double min1, min2;
+  Point * p = Ensemble::points[posPoint];
+  min1 = min2 = numeric_limits<double>::max();
+  for(unsigned int pos : hull){
+    Point * tmp = Ensemble::points[pos];
+    double distTmp = distance(p,tmp);
+    if(distTmp < min1){
+      // le min1 devient le min2
+      *p2 = *p1;
+      min2 = min1;
+      
+      // le min1 est réactualisé
+      *p1 = pos;
+      min1 = distTmp;
+      
+    }
+    else if (distTmp < min2){
+      *p2 = pos;
+      min2 = distTmp;
+    }
+  }
+}

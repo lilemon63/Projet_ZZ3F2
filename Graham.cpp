@@ -238,3 +238,35 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   tmp.calculPerimetre();//calculerPerimetre();
   return tmp;
 }
+
+Ensemble addPoint(Ensemble & e, unsigned int posAdd){
+  Ensemble tmp = e;
+  unsigned int pos1, pos2;
+  tmp.getNextsPoints(posAdd,&pos1,&pos2);
+  
+  // On met pos1 "à gauche" ou sur le futur "précédent"
+  if( e.hull[pos1 + 1] != pos2 ){
+    unsigned int tmp = pos2;
+    pos2 = pos1; 
+    pos1 = tmp;
+  }
+  
+  /* A faire dans une fonction à coté
+  unsigned int oldpos1 = -1;
+  
+  
+  Point * added = Ensemble::points[podAdd];
+  Point * p1 = Ensemble::points[e.hull[pos1]];
+  
+  
+  while( oldpos1 != pos1){
+    if(getOrientation(){
+      
+    }
+  }
+  */
+  
+  return tmp;
+}
+
+
