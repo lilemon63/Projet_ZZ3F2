@@ -39,7 +39,6 @@ void EnsembleDisplay::drawConvexHull()
   float* red = new float[3]; // {1.f,0.f,0.f};
   red[0]=1.f; red[1]=1.f; red[2]=1.f;
   Point p1,p2;
-  cerr << "\n\n\nAFFICHAGE : " << *current <<" voilà cétécurrent\n";
   for(unsigned int i=0;i<current->hull.size();++i)
     {
       //cerr << "ligne : "

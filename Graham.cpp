@@ -188,9 +188,6 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   suiv = Ensemble::points[tmp.hull[posSuiv]];//tmp.hull[posSuiv];
   
   removed = Ensemble::points[tmp.hull[pos]];
-
-  cerr << "indices : " << posPrec << " ; " << pos << " ; " << posSuiv << "\n";
-  cerr << "init des variables : " << *prec << " ; " << *removed << ";" << *suiv << "\n";
   tabX[0] = prec->x; tabX[1] = removed->x; tabX[2] = suiv->x;
   tabY[0] = prec->y; tabY[1] = removed->y; tabY[2] = suiv->y;
   //inTriangle.push_back(prec);
@@ -216,10 +213,10 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
 
   tmp.hull.erase(tmp.hull.begin() + pos);
   if(inTriangle.size() < 1){
-    cerr << "size < 1\n";
+    //cerr << "size < 1\n";
   }
   else{
-    cerr << "size >= 1\n";
+    // cerr << "size >= 1\n";
     //auto it = tmp.hull.begin();
     
     tmp.hull.insert(tmp.hull.begin()+pos, inTriangle.begin(), inTriangle.end());//, inTriangle.end());
@@ -227,7 +224,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   
 
   //tmp.hull.erase(tmp.hull.begin() + pos);
-    cerr << "graham remove after erase : " << tmp <<"\n";
+  // cerr << "graham remove after erase : " << tmp <<"\n";
   
   /*
   cerr << "poInEnsemble :" << posInEnsemble << "\n";
@@ -239,34 +236,59 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   return tmp;
 }
 
-Ensemble addPoint(Ensemble & e, unsigned int posAdd){
-  Ensemble tmp = e;
+Ensemble Graham::addPoint(Ensemble & e, unsigned int posAdd){
+  cerr << "addPoint : begin()\n";
+  Ensemble ens = e;
   unsigned int pos1, pos2;
-  tmp.getNextsPoints(posAdd,&pos1,&pos2);
+  ens.getNextsPoints(posAdd,&pos1,&pos2);
   
   // On met pos1 "à gauche" ou sur le futur "précédent"
-  if( e.hull[pos1 + 1] != pos2 ){
+ 
+  //cerr << "after inversion : " << pos1 << " ; " << pos2 << "\n";
+  /*
+  if( ens.hull[pos1 + 1] != pos2 ){
     unsigned int tmp = pos2;
     pos2 = pos1; 
     pos1 = tmp;
-  }
-  
-  /* A faire dans une fonction à coté
-  unsigned int oldpos1 = -1;
-  
-  
-  Point * added = Ensemble::points[podAdd];
-  Point * p1 = Ensemble::points[e.hull[pos1]];
-  
-  
-  while( oldpos1 != pos1){
-    if(getOrientation(){
-      
+    
+    cerr << "test Inversion !\n";
     }
-  }
   */
+  cerr << "test";  
+  cerr << " pos1 : " <<* Ensemble::points[pos1] ;
+  cerr << " pos2 : " <<* Ensemble::points[pos2] << "\n";
+  cerr << "after inversion : " << pos1 << " ; " << pos2 << "\n";
+  /*
+  cerr << "posAdd : " << *Ensemble::points[posAdd] ;
+  cerr << " pos1 : " <<* Ensemble::points[ens.hull[pos1]] ;
+  cerr << " pos2 : " <<* Ensemble::points[ens.hull[pos2]] << "\n";
+  */
+  ens.hull.insert(ens.hull.begin() + pos1, posAdd);
   
-  return tmp;
+  /* A faire dans une fonction à coté*/
+  unsigned int oldpos = -1;
+  
+  
+  Point * added = Ensemble::points[posAdd];
+  /*
+  unsigned int pos = pos1;
+  // Tant que l'on a pas fini de trouver des tournants à droite
+  while( oldpos != pos){
+    Point * p = Ensemble::points[ens.hull[pos1]];
+    unsigned int before = pos - 1;
+    oldpos = pos;
+    // On initialise le "before" la position avant. si before < 0 alors on est à la fin
+    if (before < 0) before = e.hull.size()-1;
+    Point * b = Ensemble::points[e.hull[before]];
+    
+
+    if(getOrientation(added, p,b) == -1){ // Si on fait un tournant à droite ici, cela signifie que l'enveloppe doit enlever un de ses points
+      ens.hull.erase(ens.hull.begin() + before);
+      if(pos != 0) --pos;
+    }
+  }  
+  */
+  return ens;
 }
 
 

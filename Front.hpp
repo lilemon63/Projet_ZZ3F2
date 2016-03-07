@@ -35,7 +35,7 @@ public:
   int getParetoSize() const;
   
   void constructionFirstPareto();
-  
+  void addPoint();
   std::vector<Point> getParetoPoints();
 };
 

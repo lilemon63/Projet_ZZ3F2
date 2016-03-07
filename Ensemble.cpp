@@ -101,6 +101,33 @@ void Ensemble::addPoint(Point *p){
 
 
 void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned int * p2){
+  double min, max;
+  Point * p = Ensemble::points[posPoint];
+  min = numeric_limits<double>::max();
+  max = numeric_limits<double>::min();
+  cerr << "osef\n";
+  for(unsigned int pos : hull){
+    Point * tmp = Ensemble::points[pos];
+    double angleTmp = atan2(p->x,p->y) - atan2(tmp->x,tmp->y);
+    cerr << "angleTmp : " << angleTmp << "min : " << min << " max : " << max << "\n";
+    if(angleTmp > max){
+      max = angleTmp;
+      *p1 = pos;
+      cerr << "new max : " << max << " pos : " << *Ensemble::points[pos] << "\n";
+    }
+    if (angleTmp < min){
+      min = angleTmp;
+      *p2 = pos;
+      cerr << "new max : " << max << " pos : " << *Ensemble::points[pos] << "\n";
+    }
+  }
+  cerr << "testCERR\n";
+  cerr << "p2 ?! " << *p2 << " p1 ?! " << *p1 << "\n";
+}
+
+
+/*
+void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned int * p2){
   double min1, min2;
   Point * p = Ensemble::points[posPoint];
   min1 = min2 = numeric_limits<double>::max();
@@ -123,3 +150,4 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
     }
   }
 }
+*/

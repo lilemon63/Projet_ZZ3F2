@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include "Ensemble.hpp"
 #include "Point.hpp"
 
@@ -41,12 +43,19 @@ int main(int, char**){
   //dis.drawPoints();
   //dis.drawConvexHull();
   
-  
+  std::srand(std::time(0));
   //f.removePoint();
   f.constructionFirstPareto();
-  f.showFront();
   
+  //f.showFront();
+  cerr << "before addPoint()\n";
+  f.addPoint();
+  dis.setCurrentSet(f.getCurrent());
+  dis.drawPoints();
+  dis.drawConvexHull();
   
+  /*
+
   ParetoDisplay p(f.getParetoSize(), 1600,900);
   
   vector<Point> v = f.getParetoPoints();
@@ -56,6 +65,7 @@ int main(int, char**){
   }
   
   p.drawParetoFront();
+*/
   /*
   p.addPoint();
   p.addPoint();

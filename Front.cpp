@@ -28,11 +28,9 @@ void Front::removePoint(){
     
     Ensemble best;
     best.setPerimetreToMax();
-    cerr << "best setted\n";
     for(unsigned int i = 0; i < sizeHull; ++i){
     //unsigned int i = 1;
     //for(unsigned int i = 0; i < 2; ++i){
-      cerr << "iteration " << i << "\n";
       Ensemble tmp = t->removePoint(current, i);
       //cerr << "point removed\n";
       if(tmp.getPerimetre() < best.getPerimetre() ||
@@ -50,11 +48,24 @@ void Front::removePoint(){
   
 }
 
+void Front::addPoint(){
+  if(current.ensemble.size() < 
+     Ensemble::points.size()){
+    Ensemble tmp;
+    tmp = t->addPoint(current, 5);
+    current.ensemble.clear();
+    current.hull.clear();
+    current = tmp;
+    cerr << current;
+  }
+  
+}
+
 void Front::constructionFirstPareto(){
   
   while(current.ensemble.size() > 3){
     removePoint();
-    }
+  }
   /*
   for(unsigned int i = 0; i < 5; ++i) 
   removePoint();*/
@@ -65,8 +76,9 @@ void Front::constructionFirstPareto(){
 void Front::showFront(){
   cout << "showFront : \n";
   for(const Ensemble & e : lstEnsemble){
-    cout << "nbPoints : " << e.ensemble.size() << "\n"
-	 << "ratio : " << e.getRatio() << "\n"
+    cout << "- - - - - - - - - -\n" 
+	 << "ratio : " << e.getRatio() << "\t"
+	 << "nbPoints : " << e.ensemble.size() << "\n"
 	 << e;
   }
   cout << "endFront\n";
