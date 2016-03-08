@@ -52,7 +52,7 @@ void Front::addPoint(){
   if(current.ensemble.size() < 
      Ensemble::points.size()){
     Ensemble tmp;
-    tmp = t->addPoint(current, 5);
+    tmp = t->addPoint(current, 7);
     current.ensemble.clear();
     current.hull.clear();
     current = tmp;

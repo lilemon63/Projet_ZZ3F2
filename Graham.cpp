@@ -263,8 +263,23 @@ Ensemble Graham::addPoint(Ensemble & e, unsigned int posAdd){
   cerr << " pos1 : " <<* Ensemble::points[ens.hull[pos1]] ;
   cerr << " pos2 : " <<* Ensemble::points[ens.hull[pos2]] << "\n";
   */
-  ens.hull.insert(ens.hull.begin() + pos1, posAdd);
-  
+  cerr << "foreach";
+  unsigned int i;
+  for(i = 0; i < ens.hull.size() ; ++i){
+    cerr << ens.hull[i] << " ";
+  }
+  cerr << "\n";
+  for(i = 0; ens.hull[i] != pos1; ++i);
+  cerr << "i = " << i << "\n";
+  cerr << "push";
+  ens.ensemble.push_back(posAdd);
+  ens.hull.insert(ens.hull.begin() + i+1, posAdd);
+  cerr << "foreach";
+  for(unsigned int u : ens.hull){
+    cerr << " " << u ;
+  }
+  cerr <<"\n";
+  //cerr << "ENS : " << ens;
   /* A faire dans une fonction à coté*/
   unsigned int oldpos = -1;
   
