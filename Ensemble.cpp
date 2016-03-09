@@ -107,8 +107,6 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
   minPos = maxNeg = numeric_limits<double>::max();
   
   minNeg = maxPos = -numeric_limits<double>::max();
-  //max = numeric_limits<double>::min();
-  cerr << "osef\n";
   
   *p1 = *p2 = pp1 = pp2 =  numeric_limits<unsigned int>::max();
   

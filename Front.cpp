@@ -108,3 +108,8 @@ vector<Point> Front::getParetoPoints(){
   }
   return v;
 }
+
+
+void Front::localSearch(unsigned int iter){
+  t->localSearch(iter,*this);
+}

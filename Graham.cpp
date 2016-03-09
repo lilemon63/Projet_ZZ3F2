@@ -8,7 +8,6 @@
 #include "Graham.hpp"
 #include "Ensemble.hpp"
 #include "Point.hpp"
-#include "Front.hpp"
 
 using namespace std;
 
@@ -101,32 +100,6 @@ Ensemble Graham::traiter(vector<unsigned int> points){
   return e;
 }
 
-int pointInVector(const Point * e ,const vector<unsigned int>  & v) {
-  int res = 0;
-  
-  for(unsigned int i : v){
-    Point * p = Ensemble::points[i];
-    
-    if(p == e){
-      res = 1;
-    }
-  }
-  
-  return res;
-}
-
-int pointInPolygon(int nvert, double *vertx, double *verty, double testx, double testy) 
-{
-  int i, j, c = 0;
-  for (i = 0, j = nvert-1; i < nvert; j = i++) {
-    if ((((verty[i] <= testy) && (testy < verty[j])) ||
-	 ((verty[j] <= testy) && (testy < verty[i]))) &&
-	(testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i]))
-      c = !c;
-  }
-  return c;
-}
-
 
 
 Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
@@ -139,7 +112,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   
   unsigned int posInEnsemble = 0;
   vector<unsigned int> inTriangle;
-  
+  cerr << "begin remove\n";
   posPrec = (pos == 0) ? e.hull.size()-1 : pos-1;
   posSuiv = (pos == e.hull.size()) ? 0 : pos+1;
   
@@ -153,6 +126,8 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
       ++posInEnsemble;
     }
   }
+  cerr << "posReached\n";
+  
 
   // On va constituer un triangle fait grace au point que l'on souhaite enlever, 
   // Le précédent et le suivant.
@@ -160,10 +135,14 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   suiv = Ensemble::points[tmp.hull[posSuiv]];//tmp.hull[posSuiv];
   
   removed = Ensemble::points[tmp.hull[pos]];
+	cerr << "tentative d'accès aux points\n";
+	cerr << "pos : " << pos << " prec : " << posPrec << " suiv : "  << posSuiv << "\n";
+	cerr << "tmp.hull[pos] = " << tmp.hull[pos] << " prec : " << tmp.hull[posPrec] << " suiv : " << tmp.hull[posSuiv] << "\n";
   tabX[0] = prec->x; tabX[1] = removed->x; tabX[2] = suiv->x;
   tabY[0] = prec->y; tabY[1] = removed->y; tabY[2] = suiv->y;
   //inTriangle.push_back(prec);
   
+  cerr <<"init points\n";
   
   for(unsigned int pos : tmp.ensemble){
     Point * p = Ensemble::points[pos];
@@ -175,6 +154,7 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
     }
   }
   
+  cerr << "before erase\n";
   tmp.hull.erase(tmp.hull.begin() + pos);
   if(inTriangle.size() > 0){
     if(inTriangle.size() > 2){
@@ -211,16 +191,16 @@ Ensemble Graham::addPoint(Ensemble & e, unsigned int posAdd){
   
   
   getShortcutPos1(ens,posAdd,pp1);
+  
   pp2 = pp1;
   pp2+1 == ens.hull.size() ? pp2 = 0:  ++pp2; 
   getShortcutPos2(ens,posAdd,pp2);
-  
 
   ens.ensemble.push_back(posAdd);
   ens.hull.insert(ens.hull.begin() + pp2, posAdd);
-
-  addAllNewPoints(ens,posAdd,e.hull[pos1],e.hull[pos2]);
-  
+    //addAllNewPoints(ens,posAdd,e.hull[pos1],e.hull[pos2]);
+    addAllNewPoints(ens,posAdd,pos1,pos2);
+  ens.calculPerimetre();
   return ens;
 }
 
@@ -267,6 +247,8 @@ void Graham::getShortcutPos2(Ensemble & ens, unsigned int posAdd, unsigned int &
 
 void Graham::addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, unsigned int & p3){
   
+  cerr << "addAllPoints.begin()\n";
+  cerr << "p1 : " << p1 << " p2 : " << p2 << " p3 : " << p3 << "\n";
   double tabX[3], tabY[3];
   Point * pp1 = Ensemble::points[p1];
   Point * pp2 = Ensemble::points[p2];
@@ -274,6 +256,7 @@ void Graham::addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, u
   
   tabX[0] = pp1->x; tabX[1] = pp2->x; tabX[2] = pp3->x;
   tabY[0] = pp1->y; tabY[1] = pp2->y; tabY[2] = pp3->y;
+  cerr << "init allNewPoints\n";
   for(unsigned int p : Ensemble::posPoints){
     Point * pp = Ensemble::points[p];
     if(
@@ -283,56 +266,4 @@ void Graham::addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, u
       cerr << e;
     }
   }
-}
-
-void Graham::localSearch(unsigned int iter, Front f){
-  for(unsigned int i = 0; i < iter; ++i){
-    Ensemble tmp;
-  }
-
-}
-
-Ensemble Graham::generateRandomHull(){
-  Ensemble e;
-  unsigned int size = Ensemble::points.size();
-  if(size > 3 ){
-    unsigned int pos1,pos2,pos3;
-    
-    
-    // On génère 3 nombre aléatoires différents
-    pos1 = (rand() % (unsigned int)(size));
-    do {
-      pos2 = (rand() % (unsigned int)(size));
-    }while  (pos2 == pos1);
-    do{
-      pos3 = (rand() % (unsigned int)(size));
-    }while ( pos3 == pos2 || pos3 == pos1);
-    
-    cerr << "pos : " << pos1 << " " << pos2 << " " << pos3 << "\n";
-    e.hull.push_back(pos1); e.ensemble.push_back(pos1);
-    e.hull.push_back(pos2); e.ensemble.push_back(pos2);
-    e.hull.push_back(pos3); e.ensemble.push_back(pos3);
-    
-    
-    Point * p1, * p2, * p3;
-    p1 = Ensemble::points[pos1];
-    p2 = Ensemble::points[pos2];
-    p3 = Ensemble::points[pos3];
-    
-    
-    double tabX[3], tabY[3];
-    
-    tabX[0] = p1->x; tabX[1] = p2->x; tabX[2] = p3->x;
-    tabY[0] = p1->y; tabY[1] = p2->y; tabY[2] = p3->y;
-    
-    for(unsigned int pos : Ensemble::posPoints){
-      Point * p = Ensemble::points[pos];
-      if(!pointInVector(p,e.hull) &&
-	 pointInPolygon(3,tabX,tabY,p->x,p->y)){
-	e.ensemble.push_back(pos);
-      }
-    }
-    
-  }
-  return e;
 }

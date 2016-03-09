@@ -16,11 +16,11 @@ private:
   double pourcentActu;
   Traitement * t;
   Ensemble current;
-  std::list<Ensemble> lstEnsemble;
 
 
 
 public:
+  std::list<Ensemble> lstEnsemble;
   Front(Traitement * t);
   ~Front();
 
@@ -38,6 +38,7 @@ public:
   void addPoint();
   std::vector<Point> getParetoPoints();
   void getRandomHull();
+  void localSearch(unsigned int iter);
 };
 
 

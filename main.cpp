@@ -37,9 +37,14 @@ int main(int, char**){
   Front f(t);
   
   std::srand(std::time(0));
-  cerr << "main\n";
-  //f.globalHull();
-  f.getRandomHull();
+  //std::srand(5000);
+  
+  f.globalHull();
+  
+  f.constructionFirstPareto();
+  f.localSearch(10);
+  
+  //f.getRandomHull();
   //f.showFront();
   //dis.setCurrentSet(f.getCurrent());
   

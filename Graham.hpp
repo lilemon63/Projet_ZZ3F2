@@ -41,10 +41,8 @@ public:
 
   virtual Ensemble removePoint(Ensemble & e,unsigned int pos);
   
-  virtual void localSearch(unsigned int iter, Front f);
   Ensemble addPoint(Ensemble & e, unsigned int posAdd);
-
-  Ensemble generateRandomHull();
+  
 };
 
 #endif // __GRAHAMS_HPP__
