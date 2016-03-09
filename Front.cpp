@@ -52,7 +52,6 @@ void Front::addPoint(){
     current.ensemble.clear();
     current.hull.clear();
     current = tmp;
-    cerr << current;
   }
   
 }

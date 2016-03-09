@@ -32,38 +32,27 @@ int main(int, char**){
 
   
   EnsembleDisplay dis(1600,900);
-  //EnsembleDisplay  dis2(1600,900);
   
   Front f(t);
   
   std::srand(std::time(0));
-  //std::srand(5000);
   
   f.globalHull();
   
   f.constructionFirstPareto();
   f.localSearch(10);
   
-  //f.getRandomHull();
-  //f.showFront();
-  //dis.setCurrentSet(f.getCurrent());
   
-  //dis.drawPoints();
-  //dis.drawConvexHull();
-  
-  //std::srand(std::time(0));
-  //f.removePoint();
-  //f.removePoint();
-  //f.constructionFirstPareto();
   
   //f.showFront();
   //f.addPoint();
   //f.removePoint();
+  /*
   dis.setCurrentSet(f.getCurrent());
   dis.drawPoints();
   dis.drawConvexHull();
+  */
   
-  /*
 
   ParetoDisplay p(f.getParetoSize(), 1600,900);
   
@@ -74,13 +63,15 @@ int main(int, char**){
   }
   
   p.drawParetoFront();
-*/
+	
+	for(Ensemble e : f.lstEnsemble){
+		
+	}
   /*
   p.addPoint();
   p.addPoint();
   p.addPoint();
   */
-  //cerr << "current à la fin : "<<    f.getCurrent() << "voilà\n";
   //dis.setCurrentSet(f.getCurrent());
   
   //dis.drawConvexHull();

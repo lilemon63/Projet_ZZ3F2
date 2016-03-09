@@ -11,45 +11,35 @@ Traitement::~Traitement(){}
 
 void Traitement::localSearch(unsigned int iter,  Front & f){
   for(unsigned int i = 0; i < iter; ++i){
-    cerr << "localSearch ------------- " << i << "\n";
     Ensemble tmp = generateRandomHull();
     testerFront(f,tmp);
     
-    cerr << "1st test\n";
     // ajout point
     if(tmp.ensemble.size() != Ensemble::points.size()){
       unsigned int add;
       Point * pAdd;
-      cerr << "if done\n";
       do{
 	
 	add = (rand() % (unsigned int)(Ensemble::points.size()));
 	pAdd = Ensemble::points[add];
       }while(pointInVector(pAdd,tmp.ensemble));
-      cerr << "add : " << add << " " << *pAdd << "\n";
-      cerr << "tmp : " << tmp;
       Ensemble tmpAdded = addPoint(tmp, add);
-      cerr << "added\n";
     
       testerFront(f,tmp);
-      cerr << "2nd test\n";
       unsigned int rm;
       Point * pRm;
       do{
 		rm = (rand() % (unsigned int)(Ensemble::points.size()));
 		pRm = Ensemble::points[rm];
-		cerr << "!pointInVector(pRm,tmp.hull) : " << !pointInVector(pRm,tmp.hull) << " point : " << rm << "  " << *pRm << "\n";
-		for(unsigned int i : tmpAdded.hull) cerr << i << " " << *Ensemble::points[i] << "\t";
-		cerr << "\n";
-	} while (!pointInVector(pRm,tmp.hull));
+	} while (!pointInVector(pRm,tmpAdded.hull));
 	// On prend la position d
 	unsigned int posInHull;
-	for(posInHull = 0; tmpAdded.hull[posInHull] != rm ; ++posInHull);
-      cerr << "remove : " << rm << " " << *pRm << "\n";
+	
+  //for(pp2 = 0; ens.hull[pp2] != pos2; ++pp2);
+	for(posInHull = 0; tmpAdded.hull[posInHull] != rm ; ++posInHull) ;
+	
       Ensemble tmpRm = removePoint(tmpAdded,posInHull);
-      cerr << "removed\n";
       testerFront(f,tmp);
-      cerr << "3rd test\n";
     }
     
   }
@@ -57,7 +47,6 @@ void Traitement::localSearch(unsigned int iter,  Front & f){
 }
 
 void Traitement::testerFront(Front & f, Ensemble tmp){
-	
   tmp.calculPerimetre();
   for(Ensemble e : f.lstEnsemble){
     if(e.getRatio() == tmp.getRatio()){
@@ -108,7 +97,6 @@ Ensemble Traitement::generateRandomHull(){
       if(!pointInVector(p,e.hull) &&
 	 pointInPolygon(3,tabX,tabY,p->x,p->y)){
 	e.ensemble.push_back(pos);
-	cerr << "bla :" << pos << " added" << *p <<"\n";
       }
     }
     
