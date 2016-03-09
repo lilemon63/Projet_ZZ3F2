@@ -25,6 +25,9 @@ private:
   static bool compare(unsigned int pos1,unsigned int pos2);
 
   void findHull(Ensemble & e);
+  void getShortcutPos1(Ensemble & e, unsigned int posAdd, unsigned int & pos);
+  void getShortcutPos2(Ensemble & e, unsigned int posAdd, unsigned int & pos);
+  void addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, unsigned int & p3);
 public:
   Graham(){};
   ~Graham(){};
@@ -38,8 +41,10 @@ public:
 
   virtual Ensemble removePoint(Ensemble & e,unsigned int pos);
   
+  virtual void localSearch(unsigned int iter, Front f);
   Ensemble addPoint(Ensemble & e, unsigned int posAdd);
 
+  Ensemble generateRandomHull();
 };
 
 #endif // __GRAHAMS_HPP__

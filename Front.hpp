@@ -37,6 +37,7 @@ public:
   void constructionFirstPareto();
   void addPoint();
   std::vector<Point> getParetoPoints();
+  void getRandomHull();
 };
 
 

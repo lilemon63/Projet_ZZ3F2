@@ -22,17 +22,13 @@ void Front::setCurrent(Ensemble e){
 // Exploration de l'espace 
 void Front::removePoint(){
   unsigned int sizeHull = current.hull.size() -1;
-  cerr << "size : " << sizeHull << "\n";
-  
+   
   if(current.ensemble.size() > 3){
     
     Ensemble best;
     best.setPerimetreToMax();
     for(unsigned int i = 0; i < sizeHull; ++i){
-    //unsigned int i = 1;
-    //for(unsigned int i = 0; i < 2; ++i){
       Ensemble tmp = t->removePoint(current, i);
-      //cerr << "point removed\n";
       if(tmp.getPerimetre() < best.getPerimetre() ||
 	 (tmp.getPerimetre() == best.getPerimetre() && tmp.getRatio() > best.getRatio()) ){
 	best.ensemble.clear();
@@ -84,6 +80,9 @@ void Front::showFront(){
   cout << "endFront\n";
 }
 
+void Front::getRandomHull(){
+  current = t->generateRandomHull();
+}
 
 
 

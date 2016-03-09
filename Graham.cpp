@@ -8,6 +8,7 @@
 #include "Graham.hpp"
 #include "Ensemble.hpp"
 #include "Point.hpp"
+#include "Front.hpp"
 
 using namespace std;
 
@@ -17,7 +18,6 @@ unsigned int Graham::posPivot;
 void Graham::selectionPivot(Ensemble & e){
   
   pivot = e.getFirst();
-  //vector<Point *>::iterator ptr_pivot; //= e.getEnsemble().begin();
   // On prends le point avec l'ordonnée la plus basse.
   // Si plusieurs points on l'ordonnée la plus basse, on selectionne alors l'abscisse
   for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
@@ -27,7 +27,7 @@ void Graham::selectionPivot(Ensemble & e){
     if( p->y < pivot->y || (p->y == pivot->y && p->x < pivot->x)){ // en bas à gauche
       pivot = p;
       posPivot = *it;
-      // ptr_pivot = it;
+    
     }
     
   }
@@ -36,15 +36,12 @@ void Graham::selectionPivot(Ensemble & e){
 
 double Graham::produitVectoriel(Point * p1, Point * p2, Point * p3){
 
-  //RENVOYER(p2.x - p1.x)*(p3.y - p1.y) - (p3.x - p1.x)*(p2.y - p1.y);
-  //x(p2.x - p1.x)*(p3.y - p1.y) - (p2.y - p1.y)*(p3.x - p1.x)
   return (p2->x - p1->x) * (p3->y - p1->y) - (p3->x - p1->x) * (p2->y - p1->y);
 }
 
 // 1 : Tournant à gauche
 // -1 : Tournant à droite
 // 0 : points alignés
-
 int Graham::getOrientation(Point *p, Point *q, Point *r){
   double prodVect = produitVectoriel(p,q,r);
   if(prodVect == 0) return 0;
@@ -52,18 +49,6 @@ int Graham::getOrientation(Point *p, Point *q, Point *r){
 }
 
 bool Graham::compare(unsigned int pos1,unsigned int pos2){
-  /*
-  Point * p1 = *(Point **)vp1;
-  Point * p2 = *(Point **)vp2;
-  */
-  /*
-  int orientation = getOrientation(pivot, p1, p2);
-  if (orientation = 0)
-    return 
-  
-  return false;
-  */
-  
   Point * p1, * p2;
   p1 = Ensemble::points[pos1];
   p2 = Ensemble::points[pos2];
@@ -73,26 +58,15 @@ bool Graham::compare(unsigned int pos1,unsigned int pos2){
     result > 0 ? false : true;
 }
 
-/*
-void showAngle(Point *p1, Point *p2, Point *p3, int o){
-  
-    cout << "ANGLE : " << *p1 << "/" << *p2 << "\\" << *p3
-	 << " Orientation : " << o << endl;
-}*/
 
 void Graham::findHull(Ensemble & e){
-  // stack<Point *> pile;
   Ensemble ensEnv;
-  //vector<Point *> env;
   vector<unsigned int> v;
+
   // Le pivot est insérré au début et à la fin
- 
   // Trier les points par angle (les points d'angle égal seront triés par rapport à leur abscisse)
   v = e.ensemble;
   sort(v.begin(), v.end(), &Graham::compare);
-  //v.push_back(pivot);
-  
-  //env = ensEnv.getEnsemble();
   
   v.push_back(posPivot);
   e.hull.push_back(v[0]);
@@ -166,8 +140,6 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
   unsigned int posInEnsemble = 0;
   vector<unsigned int> inTriangle;
   
-  cerr << "removePoint begin\n";
-  
   posPrec = (pos == 0) ? e.hull.size()-1 : pos-1;
   posSuiv = (pos == e.hull.size()) ? 0 : pos+1;
   
@@ -202,108 +174,165 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
       inTriangle.push_back(pos);
     }
   }
-  //inTriangle.push_back(suiv);
-  //tmp.ensemble.erase(tmp.hull.begin() + pos);
   
-  //cerr << "";
-  /*
-  for(Point * p : inTriangle){
-    cerr << *p << "&";
-    }*/
-
   tmp.hull.erase(tmp.hull.begin() + pos);
-  if(inTriangle.size() < 1){
-    //cerr << "size < 1\n";
-  }
-  else{
-    // cerr << "size >= 1\n";
-    //auto it = tmp.hull.begin();
-    
-    tmp.hull.insert(tmp.hull.begin()+pos, inTriangle.begin(), inTriangle.end());//, inTriangle.end());
+  if(inTriangle.size() > 0){
+    if(inTriangle.size() > 2){
+      
+    }
+    tmp.hull.insert(tmp.hull.begin()+pos, inTriangle.begin(), inTriangle.end());
   }
   
-
-  //tmp.hull.erase(tmp.hull.begin() + pos);
-  // cerr << "graham remove after erase : " << tmp <<"\n";
-  
-  /*
-  cerr << "poInEnsemble :" << posInEnsemble << "\n";
-  cerr << "point supprimé : " << Ensemble::points[* (tmp.ensemble.begin() + posInEnsemble)] << "oupa\n";
-  */
   tmp.ensemble.erase(tmp.ensemble.begin() + posInEnsemble);
   
+  
+
   tmp.calculPerimetre();//calculerPerimetre();
   return tmp;
 }
 
 Ensemble Graham::addPoint(Ensemble & e, unsigned int posAdd){
-  cerr << "addPoint : begin()\n";
   Ensemble ens = e;
   unsigned int pos1, pos2;
   ens.getNextsPoints(posAdd,&pos1,&pos2);
+
+  
   
   // On met pos1 "à gauche" ou sur le futur "précédent"
- 
-  //cerr << "after inversion : " << pos1 << " ; " << pos2 << "\n";
-  /*
-  if( ens.hull[pos1 + 1] != pos2 ){
+  unsigned int pp1, pp2;
+  for(pp1 = 0; ens.hull[pp1] != pos1; ++pp1);
+  for(pp2 = 0; ens.hull[pp2] != pos2; ++pp2);
+  
+  if( (pp1 + 1)% ens.hull.size() != pp2){
     unsigned int tmp = pos2;
     pos2 = pos1; 
     pos1 = tmp;
-    
-    cerr << "test Inversion !\n";
-    }
-  */
-  cerr << "test";  
-  cerr << " pos1 : " <<* Ensemble::points[pos1] ;
-  cerr << " pos2 : " <<* Ensemble::points[pos2] << "\n";
-  cerr << "after inversion : " << pos1 << " ; " << pos2 << "\n";
-  /*
-  cerr << "posAdd : " << *Ensemble::points[posAdd] ;
-  cerr << " pos1 : " <<* Ensemble::points[ens.hull[pos1]] ;
-  cerr << " pos2 : " <<* Ensemble::points[ens.hull[pos2]] << "\n";
-  */
-  cerr << "foreach";
-  unsigned int i;
-  for(i = 0; i < ens.hull.size() ; ++i){
-    cerr << ens.hull[i] << " ";
   }
-  cerr << "\n";
-  for(i = 0; ens.hull[i] != pos1; ++i);
-  cerr << "i = " << i << "\n";
-  cerr << "push";
-  ens.ensemble.push_back(posAdd);
-  ens.hull.insert(ens.hull.begin() + i+1, posAdd);
-  cerr << "foreach";
-  for(unsigned int u : ens.hull){
-    cerr << " " << u ;
-  }
-  cerr <<"\n";
-  //cerr << "ENS : " << ens;
-  /* A faire dans une fonction à coté*/
-  unsigned int oldpos = -1;
   
   
-  Point * added = Ensemble::points[posAdd];
-  /*
-  unsigned int pos = pos1;
-  // Tant que l'on a pas fini de trouver des tournants à droite
-  while( oldpos != pos){
-    Point * p = Ensemble::points[ens.hull[pos1]];
-    unsigned int before = pos - 1;
-    oldpos = pos;
-    // On initialise le "before" la position avant. si before < 0 alors on est à la fin
-    if (before < 0) before = e.hull.size()-1;
-    Point * b = Ensemble::points[e.hull[before]];
-    
+  getShortcutPos1(ens,posAdd,pp1);
+  pp2 = pp1;
+  pp2+1 == ens.hull.size() ? pp2 = 0:  ++pp2; 
+  getShortcutPos2(ens,posAdd,pp2);
+  
 
-    if(getOrientation(added, p,b) == -1){ // Si on fait un tournant à droite ici, cela signifie que l'enveloppe doit enlever un de ses points
-      ens.hull.erase(ens.hull.begin() + before);
-      if(pos != 0) --pos;
-    }
-  }  
-  */
+  ens.ensemble.push_back(posAdd);
+  ens.hull.insert(ens.hull.begin() + pp2, posAdd);
+
+  addAllNewPoints(ens,posAdd,e.hull[pos1],e.hull[pos2]);
+  
   return ens;
 }
 
+void Graham::getShortcutPos1(Ensemble & ens, unsigned int posAdd, unsigned int & pos){
+  unsigned int oldpos; 
+  Point * added = Ensemble::points[posAdd];
+  while( oldpos != pos){
+    Point * p = Ensemble::points[ens.hull[pos]];
+    unsigned int before = pos - 1;
+    oldpos = pos;
 
+    if (before < 0) before = ens.hull.size()-1;
+    Point * b = Ensemble::points[ens.hull[before]];
+
+    if(getOrientation(added, p,b) == -1){ 
+      ens.hull.erase(ens.hull.begin() + pos);
+      pos == 0 ? pos = ens.hull.size()-1 : --pos;
+    }
+  }  
+}
+
+void Graham::getShortcutPos2(Ensemble & ens, unsigned int posAdd, unsigned int & pos){
+  unsigned int oldpos = numeric_limits<unsigned int>::max(); 
+  Point * added = Ensemble::points[posAdd];
+  unsigned int after;
+  while( oldpos != pos){
+    Point * p = Ensemble::points[ens.hull[pos]];
+    after = pos +1;
+    oldpos = pos;
+    if (after == ens.hull.size()) after = 0;
+    Point * a = Ensemble::points[ens.hull[after]];
+    
+    int orientation = getOrientation(added, p,a);
+ 
+    if(orientation == 1){ 
+      ens.hull.erase(ens.hull.begin() + pos);
+      ++pos;
+      if(pos  == ens.hull.size()) pos = 0;
+      pos = ((pos+1)%ens.hull.size());
+    }
+  }  
+}
+
+
+void Graham::addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, unsigned int & p3){
+  
+  double tabX[3], tabY[3];
+  Point * pp1 = Ensemble::points[p1];
+  Point * pp2 = Ensemble::points[p2];
+  Point * pp3 = Ensemble::points[p3];
+  
+  tabX[0] = pp1->x; tabX[1] = pp2->x; tabX[2] = pp3->x;
+  tabY[0] = pp1->y; tabY[1] = pp2->y; tabY[2] = pp3->y;
+  for(unsigned int p : Ensemble::posPoints){
+    Point * pp = Ensemble::points[p];
+    if(
+       !pointInVector(pp,e.ensemble) &&
+       pointInPolygon(3, tabX,tabY, pp->x, pp->y) ){
+      e.ensemble.push_back(p);
+      cerr << e;
+    }
+  }
+}
+
+void Graham::localSearch(unsigned int iter, Front f){
+  for(unsigned int i = 0; i < iter; ++i){
+    Ensemble tmp;
+  }
+
+}
+
+Ensemble Graham::generateRandomHull(){
+  Ensemble e;
+  unsigned int size = Ensemble::points.size();
+  if(size > 3 ){
+    unsigned int pos1,pos2,pos3;
+    
+    
+    // On génère 3 nombre aléatoires différents
+    pos1 = (rand() % (unsigned int)(size));
+    do {
+      pos2 = (rand() % (unsigned int)(size));
+    }while  (pos2 == pos1);
+    do{
+      pos3 = (rand() % (unsigned int)(size));
+    }while ( pos3 == pos2 || pos3 == pos1);
+    
+    cerr << "pos : " << pos1 << " " << pos2 << " " << pos3 << "\n";
+    e.hull.push_back(pos1); e.ensemble.push_back(pos1);
+    e.hull.push_back(pos2); e.ensemble.push_back(pos2);
+    e.hull.push_back(pos3); e.ensemble.push_back(pos3);
+    
+    
+    Point * p1, * p2, * p3;
+    p1 = Ensemble::points[pos1];
+    p2 = Ensemble::points[pos2];
+    p3 = Ensemble::points[pos3];
+    
+    
+    double tabX[3], tabY[3];
+    
+    tabX[0] = p1->x; tabX[1] = p2->x; tabX[2] = p3->x;
+    tabY[0] = p1->y; tabY[1] = p2->y; tabY[2] = p3->y;
+    
+    for(unsigned int pos : Ensemble::posPoints){
+      Point * p = Ensemble::points[pos];
+      if(!pointInVector(p,e.hull) &&
+	 pointInPolygon(3,tabX,tabY,p->x,p->y)){
+	e.ensemble.push_back(pos);
+      }
+    }
+    
+  }
+  return e;
+}

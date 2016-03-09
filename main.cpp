@@ -36,20 +36,24 @@ int main(int, char**){
   
   Front f(t);
   
-  f.globalHull();
+  std::srand(std::time(0));
+  cerr << "main\n";
+  //f.globalHull();
+  f.getRandomHull();
   //f.showFront();
   //dis.setCurrentSet(f.getCurrent());
   
   //dis.drawPoints();
   //dis.drawConvexHull();
   
-  std::srand(std::time(0));
+  //std::srand(std::time(0));
   //f.removePoint();
-  f.constructionFirstPareto();
+  //f.removePoint();
+  //f.constructionFirstPareto();
   
   //f.showFront();
-  cerr << "before addPoint()\n";
-  f.addPoint();
+  //f.addPoint();
+  //f.removePoint();
   dis.setCurrentSet(f.getCurrent());
   dis.drawPoints();
   dis.drawConvexHull();

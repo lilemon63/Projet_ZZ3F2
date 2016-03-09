@@ -115,7 +115,7 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
   for(unsigned int pos : hull){
     Point * tmp = Ensemble::points[pos];
     double angleTmp = atan2(p->x,p->y) - atan2(tmp->x,tmp->y);
-    //cerr << "Point : " << *tmp <<  "angleTmp : " << angleTmp << "\n";
+
     // Montage compliqué pour dire qu'on cherche des angles les plus proches de zéro et si possible
     // Un positif et l'autre négatif. Sinon on prend juste les deux angles les plus éloignés
     if(angleTmp > 0){
@@ -129,7 +129,6 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
       }
     }
     else{
-      cerr << "minNeg : " << minNeg << "maxNeg : " << maxNeg << "\n";
       if(angleTmp > minNeg){
 	*p2 = pos;
 	minNeg = angleTmp;
@@ -149,73 +148,7 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
      && pp1 != numeric_limits<unsigned int>::max()){
     *p2 = pp1;
   }
-  cerr << "p2 : " << *p2 << "\n";
-  cerr << "*p1 : " << *p1 << "\t" << *Ensemble::points[*p1] <<"\n"
-       << "*p2 : " << *p2  << "\t" << *Ensemble::points[*p2]<< "\n";
 }
 
-/*
-void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned int * p2){
-  double minPos1, minPos2, minNeg1,minNeg2;
-  unsigned int pp1, pp2;
-  Point * p = Ensemble::points[posPoint];
-  minPos1 = minPos2 = numeric_limits<double>::max();
-  minNeg1 = minNeg2 = -numeric_limits<double>::max();
-  //max = numeric_limits<double>::min();
-  cerr << "osef\n";
-  
-  *p1 = *p2 = pp1 = pp2 =  numeric_limits<unsigned int>::max();
-  
-  for(unsigned int pos : hull){
-    Point * tmp = Ensemble::points[pos];
-    double angleTmp = atan2(p->x,p->y) - atan2(tmp->x,tmp->y);
-    cerr << "Point : " << *tmp <<  "angleTmp : " << angleTmp << "\n";
-    // Montage compliqué pour dire qu'on cherche des angles les plus proches de zéro et si possible
-    // Un positif et l'autre négatif. Sinon on prend juste les deux angles les plus proches
-    if(angleTmp > 0){
-        if(angleTmp < minPos1){
-	  // le min1 devient le min2
-	  pp1 = *p1;
-	  minPos2 = minPos1;
-      
-	  // le min1 est réactualisé
-	  *p1 = pos;
-	  minPos1 = angleTmp;
-      
-	}
-	else if (angleTmp < minPos2){
-	  pp1 = pos;
-	  minPos2 = angleTmp;
-	}
-    }
-    else{
-      if(angleTmp > minNeg1){
-	// le min1 devient le min2
-	pp2 = *p2;
-	minPos2 = minPos1;
-      
-	// le min1 est réactualisé
-	*p2 = pos;
-	minNeg1 = angleTmp;
-      
-      }
-      else if (angleTmp > minNeg2){
-	pp2 = pos;
-	minNeg2 = angleTmp;
-      }
-    }
-  }
-    
-  if(*p1 == numeric_limits<unsigned int>::max()
-     && pp2 != numeric_limits<unsigned int>::max()){
-    *p1 = pp2;
-  }
-  if(*p2 ==  numeric_limits<unsigned int>::max() 
-     && pp1 != numeric_limits<unsigned int>::max()){
-    *p2 = pp1;
-  }
-  
-  cerr << "*p1 : " << *p1 << "\t" << *Ensemble::points[*p1] <<"\n"
-       << "*p2 : " << *p2  << "\t" << *Ensemble::points[*p2]<< "\n";
-}
-*/
+
+// Remove à refaire ?
