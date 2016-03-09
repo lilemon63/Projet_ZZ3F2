@@ -1,3 +1,8 @@
+/**
+ * @file SquareGenerator.cpp
+ * @brief Corps de la class SquareGenerator permettant la génération aléatoire à l'intérieur d'un carré 
+ * @author Damien Morel et Maxime Mikotajewski
+ */
 #include "SquareGenerator.hpp"
 #include "Ensemble.hpp"
 

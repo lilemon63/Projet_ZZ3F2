@@ -1,3 +1,8 @@
+/**
+ * @file EnsembleDisplay.cpp
+ * @brief Corps de la classe EnsembleDisplay permettant d'afficher graphiquement un ensemble 
+ * @author Damien Morel et Maxime Mikotajewski
+ */
 #include "EnsembleDisplay.hpp"
 
 #include <iostream>
@@ -23,10 +28,10 @@ Point EnsembleDisplay::toDisplayableCoordinates(const Point& point)
 }
 
 EnsembleDisplay::EnsembleDisplay(int width, int height):current(NULL),_xMax(0),_yMax(0),
-							img(width+10,height+10,1,3),
-							_height(height),_width(width)
+	img(width+10,height+10,1,3),
+	_height(height),_width(width)
 {
-  
+
 }
 
 EnsembleDisplay::~EnsembleDisplay()
@@ -35,26 +40,26 @@ EnsembleDisplay::~EnsembleDisplay()
 
 void EnsembleDisplay::drawConvexHull()
 {
-  drawPoints();
-  float* red = new float[3]; // {1.f,0.f,0.f};
-  red[0]=1.f; red[1]=1.f; red[2]=1.f;
-  Point p1,p2;
-  for(unsigned int i=0;i<current->hull.size();++i)
-    {
-      //cerr << "ligne : "
-	  
-      p1=toDisplayableCoordinates(*(Ensemble::points[
-						     (*current).hull[i%(current->hull.size())]
-						     ]
-				    ));
-      p2=toDisplayableCoordinates(*(Ensemble::points[
-						     (*current).hull[(i+1)%(current->hull.size())]
-						     ]
-				    ));
-      img.draw_line(p1.x,p1.y,p2.x,p2.y,red);
-    }
-  delete[] red;
-  img.display();
+	drawPoints();
+	float* red = new float[3]; // {1.f,0.f,0.f};
+	red[0]=1.f; red[1]=1.f; red[2]=1.f;
+	Point p1,p2;
+	for(unsigned int i=0;i<current->hull.size();++i)
+	{
+		//cerr << "ligne : "
+
+		p1=toDisplayableCoordinates(*(Ensemble::points[
+					(*current).hull[i%(current->hull.size())]
+					]
+					));
+		p2=toDisplayableCoordinates(*(Ensemble::points[
+					(*current).hull[(i+1)%(current->hull.size())]
+					]
+					));
+		img.draw_line(p1.x,p1.y,p2.x,p2.y,red);
+	}
+	delete[] red;
+	img.display();
 }
 
 void EnsembleDisplay::drawPoints()
@@ -65,10 +70,10 @@ void EnsembleDisplay::drawPoints()
 	for(unsigned int i=0;i!=(*current).ensemble.size();++i)
 	{
 
-	  p=toDisplayableCoordinates(*(Ensemble::points[
-							(*current).ensemble[i]
-							]
-				       ));
+		p=toDisplayableCoordinates(*(Ensemble::points[
+					(*current).ensemble[i]
+					]
+					));
 		img.draw_point(p.x,p.y,0,red);
 		//		cout << _displayPoints(i,0) << " " << _displayPoints(i,1) << endl;
 		//		img.draw_line(_displayPoints(i-1,0),_displayPoints(i-1,1),
@@ -86,8 +91,8 @@ void EnsembleDisplay::setCurrentSet(Ensemble& e)
 	_xMax=0; _yMax=0;
 	current=&e;
 	for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end();++it)
-	  {
-	    Point * tmp = Ensemble::points[ *it ];
+	{
+		Point * tmp = Ensemble::points[ *it ];
 		if(std::abs(tmp->x) > _xMax)
 		{
 			_xMax = std::abs(tmp->x);

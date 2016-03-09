@@ -14,18 +14,18 @@ Point::Point(float x,float y):x(x),y(y){}
 Point::Point(const Point & p): x(p.x), y(p.y){}
 
 Point Point::operator+(const Point & p){
-  this->x += p.x;
-  this->y += p.y;
-  return *this;
+	this->x += p.x;
+	this->y += p.y;
+	return *this;
 }
 
 Point Point::operator=(const Point & p){
-  this->x = p.x;
-  this->y = p.y;
-  return *this;
+	this->x = p.x;
+	this->y = p.y;
+	return *this;
 }
 
 
 std::ostream & operator<<(std::ostream & o, Point p){
-  return o << "(" << p.x << ";" << p.y << ")";
+	return o << "(" << p.x << ";" << p.y << ")";
 }

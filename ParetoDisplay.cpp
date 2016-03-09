@@ -1,3 +1,8 @@
+/**
+ * @file ParetoDisplay.cpp
+ * @brief Corps de la class ParetoDisplay permettant l'affichage graphique d'un front de Pareto 
+ * @author Damien Morel et Maxime Mikotajewski
+ */
 #include "ParetoDisplay.hpp"
 
 #include <iostream>
@@ -30,7 +35,7 @@ ParetoDisplay::~ParetoDisplay()
 
 void ParetoDisplay::addPoint(Point* point)
 {
-	
+
 	if(_nbPoints==0)
 	{
 		_criteriaMax=point->y;
@@ -42,13 +47,13 @@ void ParetoDisplay::addPoint(Point* point)
 		_displayPoints(_nbPoints,1)=displayPoint.y;
 		_nbPoints++;
 	}
-	
+
 }
 
 void ParetoDisplay::drawParetoFront()
 {
-	
-//	const unsigned char color[] = { 255,128,64 };
+
+	//	const unsigned char color[] = { 255,128,64 };
 	float* red = new float[3]; // {1.f,0.f,0.f};
 	red[0]=1.f; red[1]=0.f; red[2]=0.f;
 	for(int i=1;i!=_nbPoints;++i)

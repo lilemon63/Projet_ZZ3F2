@@ -27,12 +27,12 @@ class EnsembleDisplay {
 
 		// Private attributes
 		Ensemble* current;
-		
-//		int _nbPoints;
-//		int _nbPointsMax;
+
+		//		int _nbPoints;
+		//		int _nbPointsMax;
 		float _xMax;
 		float _yMax;
-//		CImg<int> _displayPoints;
+		//		CImg<int> _displayPoints;
 		CImg<float> img;
 		int _height;
 		int _width;
