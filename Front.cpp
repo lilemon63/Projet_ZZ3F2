@@ -4,6 +4,7 @@
  * @author Damien Morel et Maxime Mikotajewski
  */
 #include <iostream>
+#include <limits>
 #include "Front.hpp"
 
 using namespace std;
@@ -29,17 +30,19 @@ void Front::removePoint(){
 		best.setPerimetreToMax();
 		for(unsigned int i = 0; i < sizeHull; ++i){
 			Ensemble tmp = t->removePoint(current, i);
-			if(tmp.getPerimetre() < best.getPerimetre() ||
-					(tmp.getPerimetre() == best.getPerimetre() && tmp.getRatio() > best.getRatio()) ){
+			if(tmp.getPerimetre() < best.getPerimetre() ){
+					//||(tmp.getPerimetre() == best.getPerimetre() && tmp.getRatio() > best.getRatio()) ){
 				best.ensemble.clear();
 				best.hull.clear();
 				best = tmp;
 			}
-			lstEnsemble.push_back(best);
 		}
 		current.ensemble.clear();
 		current.hull.clear();
-		current = best;
+		if(best.getPerimetre() != numeric_limits<double>::max()){
+			current = best;
+			lstEnsemble.push_back(current);
+		}
 	}
 
 }

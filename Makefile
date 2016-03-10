@@ -8,7 +8,7 @@
 EXEC=Projet
 
 #Liste des fichiers sources separes par des espaces
-SOURCES=main.cpp ParetoDisplay.cpp Point.cpp EnsembleDisplay.cpp Ensemble.cpp Front.cpp SquareGenerator.cpp LoaderPoint.cpp Graham.cpp Traitement.cpp
+SOURCES=main.cpp ParetoDisplay.cpp Point.cpp EnsembleDisplay.cpp Ensemble.cpp Front.cpp SquareGenerator.cpp LoaderPoint.cpp Graham.cpp Traitement.cpp Exporter.cpp
 
 #Liste des fichiers objets
 OBJETS=$(SOURCES:%.cpp=%.o)

@@ -2,6 +2,8 @@ makefile.dep
 data2.txt
 *.sh
 Projet
+*.dat
+
 
 # Compiled Object files
 *.slo

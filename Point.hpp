@@ -60,6 +60,13 @@ struct Point{
 	 * Surcharge de l'opérateur =
 	 */
 	Point operator=(const Point & p);
+	
+	
+	/**
+	 * @brief Permet l'exportation d'un point au format texte
+	 * @return Une string contenant le point au format texte
+	 */ 
+	std::string exportTxt() const;
 };
 
 /**

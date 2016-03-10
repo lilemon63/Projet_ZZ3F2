@@ -24,6 +24,6 @@ void SquareGenerator::generateSquare(float centerX, float centerY, int size, int
 		y = ((double)rand()/(double)rand.max())* (double)size;
 		x+=centerX-((double)size/2.0);
 		y+=centerY-((double)size/2.0);
-		Ensemble::points.push_back(new Point(x,y));
+		Ensemble::addPoint(new Point(x,y));
 	}
 }

@@ -3,6 +3,8 @@
  * @brief Corps de la structure Point (points cartésiens d'un graphe)
  * @author Damien Morel et Maxime Mikotajewski
  */
+ 
+#include <string>
 #include "Point.hpp"
 
 Point::Point(){}
@@ -28,4 +30,9 @@ Point Point::operator=(const Point & p){
 
 std::ostream & operator<<(std::ostream & o, Point p){
 	return o << "(" << p.x << ";" << p.y << ")";
+}
+
+
+std::string Point::exportTxt() const{
+	return std::to_string(x) + " "  + std::to_string(y);
 }

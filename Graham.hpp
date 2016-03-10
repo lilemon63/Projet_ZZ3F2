@@ -129,6 +129,12 @@ class Graham : public Traitement{
 		 */ 
 		Ensemble addPoint(Ensemble & e, unsigned int posAdd);
 
+
+		/**
+		 * @brief Vérifie si l'enveloppe est bien convexe. Si non, résout le problème grâce à l'orientation.
+		 * @param e L'ensemble à vérifier
+		 */
+		 void verifierConvexiteHull(Ensemble & e);
 };
 
 #endif // __GRAHAMS_HPP__

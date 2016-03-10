@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <limits>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 
 #include "Ensemble.hpp"
@@ -38,14 +40,31 @@ Ensemble Ensemble::operator=(Ensemble e){
 	return *this;
 }
 
-std::ostream & operator<<(std::ostream & o, Ensemble e){
+string Ensemble::exportTxt() const{
+	stringstream sstm;
+	//string exported = "";
+	sstm << "# Ensemble\n";
+	for(const unsigned int & i : ensemble){
+		sstm << points[i]->exportTxt() + "\n";
+	}
+	sstm << "\n\n# Hull";
+	for( const unsigned int &i : hull){
+		sstm << points[i]->exportTxt() + "\n";
+	}
+	sstm << points[hull[0]]->exportTxt() + "\n";
+	
+	return sstm.str();
+}
 
-	o << "Affichage de l'ensemble : \n";
+
+ostream & operator<<(std::ostream & o, Ensemble e){
+
+	o << "Affichage de l'ensemble avec " << e.ensemble.size() << "points: \n";
 	for(const unsigned int i : e.ensemble){
 
 		o << *(Ensemble::points[i]) << "\n";
 	}
-	o << "Affichage de l'enveloppe convexe :\n";
+	o << "Affichage de l'enveloppe convexe avec " << e.hull.size() << " points :\n";
 
 	for(const unsigned int i : e.hull){
 		o << *(Ensemble::points[i]) << "\n";
@@ -63,6 +82,8 @@ void Ensemble::destroy(){
 		delete p;
 	}
 }
+
+
 
 Point * Ensemble::getFirst(){
 	Point * tmp = 0;
@@ -153,5 +174,3 @@ void Ensemble::getNextsPoints(unsigned int posPoint, unsigned int * p1, unsigned
 	}
 }
 
-
-// Remove à refaire ?

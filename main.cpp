@@ -19,67 +19,85 @@
 #include "ParetoDisplay.hpp"
 #include "EnsembleDisplay.hpp"
 
+#include "Exporter.hpp"
+
 using namespace std;
 
+
 int main(int, char**){
-	string filename  = "data.txt";
+	//string filename  = "data.txt";
 	LoaderPoint loader;
 	// Remplit un ensemble de points en static (Il n'y a dans tous les cas qu'un seul ensemble de point par exécution du programme)
-	loader.loadFile(filename);
-
+	//loader.loadFile(filename);
+	
+	
+	SquareGenerator generator(12);
+	generator.generateSquare(-2,-2,2,40);
+	generator.generateSquare(4,4,3,60);
+	
 	// Graham hérite de Traitement.
 	Traitement *t = new Graham();
 
-
+	EnsembleDisplay dis(1600,900) ;
 
 	Front f(t);
 
 	std::srand(std::time(0));
 
 	f.globalHull();
-
+	
+	//cerr << f.getCurrent();
+	//f.removePoint();
+	//cerr << "\n\n";
+	
+	//cerr << f.getCurrent();
 	f.constructionFirstPareto();
-	f.localSearch(10);
-
+	cerr << "Pareto size : " << f.getParetoSize() << "\n";
+	//f.localSearch_v2(10);
 
 
 	//f.showFront();
 	//f.addPoint();
 	//f.removePoint();
 	/*
-	   dis.setCurrentSet(f.getCurrent());
-	   dis.drawPoints();
-	   dis.drawConvexHull();
-	 */
+	dis.setCurrentSet(f.getCurrent());
+	dis.drawPoints();
+	dis.drawConvexHull();
+*/	
 
 
 	ParetoDisplay p(f.getParetoSize(), 1600,900);
 
 	vector<Point> v = f.getParetoPoints();
+	
+	
 
 	for(Point point : v){
 		p.addPoint(&point);
 	}
-
+	Exporter exp;
+	exp.exportData(f);	
 	p.drawParetoFront();
+
 
 	delete t;
 	Ensemble::destroy();
 	return 0;
 }
 
+
 /*
  	// Génération de points sur un carré (peut facilement générer sur deux carrés avec deux generateSquare)
-   int main(int, char**)
-   {
-   SquareGenerator generator(12);
-   generator.generateSquare(5,4,2,10);
-
-   for(std::vector<Point*>::iterator it = Ensemble::points.begin();
-   it!=Ensemble::points.end();
-   ++it)
-   {
-   cout << *(*it) << endl;
-   }
-   }
- */
+int main(int, char**){
+	SquareGenerator generator(12);
+	generator.generateSquare(-2,-2,2,40);
+	generator.generateSquare(4,4,3,60);
+	
+	
+	for(std::vector<Point*>::iterator it = Ensemble::points.begin();
+		it!=Ensemble::points.end();
+		++it){
+		cout << *(*it) << endl;
+	}
+}
+*/

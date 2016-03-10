@@ -72,14 +72,20 @@ void Graham::findHull(Ensemble & e){
 	e.hull.push_back(v[0]);
 
 	for(unsigned int i = 1; i < v.size()-1; ++i){
-
+		vector<unsigned int> tmp;
 		int s = e.hull.size();
 		int o = getOrientation(
 				Ensemble::points[e.hull[s-1]], 
 				Ensemble::points[v[i]], 
 				Ensemble::points[v[i+1]]);
-		if(o < 1){
+		if(o == -1){
+			if(tmp.size() != 0) e.hull.insert(e.hull.begin(),tmp.begin(),tmp.end());
 			e.hull.push_back(v[i]);
+		}
+		else if (o == 0){ 
+			tmp.push_back(v[i]);
+		} else{
+			tmp.clear();
 		}
 	}
 
@@ -97,6 +103,7 @@ Ensemble Graham::traiter(vector<unsigned int> points){
 	selectionPivot(e);
 
 	findHull(e);
+	verifierConvexiteHull(e);
 	e.calculPerimetre();
 	return e;
 }
@@ -150,17 +157,25 @@ Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
 		}
 	}
 	tmp.hull.erase(tmp.hull.begin() + pos);
-	if(inTriangle.size() > 0){
-		if(inTriangle.size() > 2){
-
-		}
+	if(inTriangle.size() == 1){
 		tmp.hull.insert(tmp.hull.begin()+pos, inTriangle.begin(), inTriangle.end());
+	}
+	else if(inTriangle.size() > 1){ 
+		
+		Ensemble ajoutsHull;
+		for(unsigned int p : inTriangle){
+			ajoutsHull.ensemble.push_back(p);
+		}
+		findHull(ajoutsHull);			
+		tmp.hull.insert(tmp.hull.begin()+pos,ajoutsHull.hull.begin(),ajoutsHull.hull.end());	
+		
 	}
 
 	tmp.ensemble.erase(tmp.ensemble.begin() + posInEnsemble);
 
 
 
+	//verifierConvexiteHull(tmp);
 	tmp.calculPerimetre();//calculerPerimetre();
 	return tmp;
 }
@@ -194,6 +209,8 @@ Ensemble Graham::addPoint(Ensemble & e, unsigned int posAdd){
 	ens.hull.insert(ens.hull.begin() + pp2, posAdd);
 	//addAllNewPoints(ens,posAdd,e.hull[pos1],e.hull[pos2]);
 	addAllNewPoints(ens,posAdd,pos1,pos2);
+	
+	verifierConvexiteHull(ens);
 	ens.calculPerimetre();
 	return ens;
 }
@@ -261,5 +278,47 @@ void Graham::addAllNewPoints(Ensemble & e, unsigned int &p1, unsigned int &p2, u
 				pointInPolygon(3, tabX,tabY, pp->x, pp->y) ){
 			e.ensemble.push_back(p);
 		}
+	}
+}
+
+
+void Graham::verifierConvexiteHull(Ensemble & e){
+	unsigned int oldSizeH = 0;
+	
+	unsigned int sizeH = e.hull.size();
+	
+	while (sizeH != oldSizeH){
+		if(sizeH > 3){
+			vector<unsigned int> tmp;
+			vector<unsigned int> suppression;
+			unsigned int pos1,pos2,pos3;
+			for(unsigned int pos = 0 ; pos < sizeH - 2; ++pos){
+					pos1 = e.hull[pos % sizeH];
+					pos2 = e.hull[(pos+1) % sizeH];
+					pos3 = e.hull[(pos+2) % sizeH];
+					int o = getOrientation (	Ensemble::points[pos1], Ensemble::points[pos2], Ensemble::points[pos3] );
+					
+					// 1 : Tournant à gauche
+					if( o == 1){
+							suppression.push_back(pos+1);
+							if(tmp.size() != 0) suppression.insert(suppression.begin(),tmp.begin(),tmp.end());
+					// 0 : points alignés
+					} else if (o == 0) {
+							tmp.push_back(pos+1);
+					// -1 : Tournant à droite
+					} else {
+							tmp.clear();
+					}					
+			}
+			
+			
+			for(unsigned int i = 0 ; i < suppression.size(); ++i){
+				e.hull.erase(e.hull.begin() + suppression[i] - i);
+			}
+			suppression.clear();
+			
+		}
+		oldSizeH = sizeH;
+		sizeH = e.hull.size();
 	}
 }

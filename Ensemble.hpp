@@ -30,12 +30,20 @@ class Ensemble{
 		 * @return la distance entre p1 et p2
 		 */
 		double distance(Point * p1, Point * p2);
+		
 	public:
 		/**
 		 * @def points
 		 * @brief le vecteur statique de l'ensemble des points existant pour un problème donné
 		 */
 		static std::vector<Point *> points;
+		
+		
+		/**
+		 * @brief Renvoie le premier point d'un ensemble
+		 * @return Le premier point de l'ensemble
+		 */ 
+		Point * getFirst();
 		
 		/**
 		 * @def posPoints
@@ -124,6 +132,13 @@ class Ensemble{
 		 * @param p Le point à ajouter
 		 */ 
 		static void addPoint(Point * p);
+		
+		
+		/**
+		 * @brief Permet d'exporter au format texte un ensemble
+		 * @return une string contenant l'ensemble des points du vecteur ensemble, puis une ligne <hull> et l'ensemble des points de l'enveloppe convexe
+		 */ 
+		std::string exportTxt() const;
 };
 
 
