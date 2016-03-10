@@ -47,11 +47,14 @@ int main(int, char**){
 	f.globalHull();
 	
 	//cerr << f.getCurrent();
-	//f.removePoint();
+	/*
+	for(int i = 0; i < 10; ++i)
+	f.removePoint();
+	* */
 	//cerr << "\n\n";
 	
 	//cerr << f.getCurrent();
-	f.constructionFirstPareto();
+	//f.constructionFirstPareto();
 	cerr << "Pareto size : " << f.getParetoSize() << "\n";
 	//f.localSearch_v2(10);
 
@@ -59,25 +62,25 @@ int main(int, char**){
 	//f.showFront();
 	//f.addPoint();
 	//f.removePoint();
-	/*
+	
 	dis.setCurrentSet(f.getCurrent());
 	dis.drawPoints();
 	dis.drawConvexHull();
-*/	
+
 
 
 	ParetoDisplay p(f.getParetoSize(), 1600,900);
 
 	vector<Point> v = f.getParetoPoints();
 	
-	
-
 	for(Point point : v){
 		p.addPoint(&point);
 	}
+	
 	Exporter exp;
 	exp.exportData(f);	
-	p.drawParetoFront();
+	
+	//p.drawParetoFront();
 
 
 	delete t;

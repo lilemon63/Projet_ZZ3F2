@@ -47,7 +47,7 @@ string Ensemble::exportTxt() const{
 	for(const unsigned int & i : ensemble){
 		sstm << points[i]->exportTxt() + "\n";
 	}
-	sstm << "\n\n# Hull";
+	sstm << "\n\n# Hull\n";
 	for( const unsigned int &i : hull){
 		sstm << points[i]->exportTxt() + "\n";
 	}
