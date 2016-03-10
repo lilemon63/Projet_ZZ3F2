@@ -17,6 +17,7 @@ Exporter::Exporter(){}
 Exporter::~Exporter(){}
 		
 void Exporter::exportData(Front & f){
+	cerr << "Exportation des données\n";
 	for(const Ensemble & e : f.lstEnsemble){
 		stringstream sstm;
 		sstm << "HullData/bestHullWith" << setfill('0') << setw(3) << e.ensemble.size() << ".dat";
@@ -36,4 +37,5 @@ void Exporter::exportData(Front & f){
 		fichier << p.exportTxt() << "\n";
 	}	
 	fichier.close();
+	cerr << "Données exportés\n";
 }

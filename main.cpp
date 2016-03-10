@@ -54,7 +54,7 @@ int main(int, char**){
 	//cerr << "\n\n";
 	
 	//cerr << f.getCurrent();
-	//f.constructionFirstPareto();
+	f.constructionFirstPareto();
 	cerr << "Pareto size : " << f.getParetoSize() << "\n";
 	//f.localSearch_v2(10);
 
