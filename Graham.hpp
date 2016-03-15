@@ -44,7 +44,7 @@ class Graham : public Traitement{
 		 * @param p3 Le point p3
 		 * @return Le produit vectoriel 
 		 */ 
-		double produitVectoriel(Point * p1, Point * p2, Point * p3);
+    //	double produitVectoriel(Point * p1, Point * p2, Point * p3);
 		
 		/**
 		 * @brief Défini l'orientation d'un angle selon trois points
@@ -55,7 +55,7 @@ class Graham : public Traitement{
 		 * 			<b>-1</b> si tournant à droite
 		 * 			<b>0</b> si alignés
 		 */ 
-		int getOrientation(Point * p, Point *q, Point * r );
+        static int getOrientation(Point * p, Point *q, Point * r );
 
 		/**
 		 * @brief fonction utilisé pour le premier qsort nécessaire à l'algorithme de graham

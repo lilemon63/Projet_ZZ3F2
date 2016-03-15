@@ -59,7 +59,7 @@ void Traitement::localSearch_v2(unsigned int iter,  Front & f){
 		testerFront(f,random);
 		
 		while(random.ensemble.size() > 3){
-			unsigned int sizeHull = random.hull.size() -1;
+			unsigned int sizeHull = random.hull.size();
 
 			Ensemble best;
 			best.setPerimetreToMax();
@@ -79,16 +79,45 @@ void Traitement::localSearch_v2(unsigned int iter,  Front & f){
 		}
 		
 	}
+	
+	/*
+	 	unsigned int sizeHull = current.hull.size() -1;
+
+	if(current.ensemble.size() > 3){
+		cerr << "current.ensemble.size() ?! " << current.ensemble.size() << "\n";
+		Ensemble best;
+		best.setPerimetreToMax();
+		for(unsigned int i = 0; i < sizeHull; ++i){
+			Ensemble tmp = t->removePoint(current, i);
+			if(tmp.getPerimetre() < best.getPerimetre() ){
+					//||(tmp.getPerimetre() == best.getPerimetre() && tmp.getRatio() > best.getRatio()) ){
+				best.ensemble.clear();
+				best.hull.clear();
+				best = tmp;
+			}
+		}
+		current.ensemble.clear();
+		current.hull.clear();
+		if(best.getPerimetre() != numeric_limits<double>::max()){
+			current = best;
+			lstEnsemble.push_back(current);
+		}
+	}
+	 */
 }
 
 void Traitement::testerFront(Front & f, Ensemble tmp){
 	tmp.calculPerimetre();
 	for(Ensemble e : f.lstEnsemble){
-		if(e.getRatio() == tmp.getRatio()){
+		if(e.ensemble.size() == tmp.ensemble.size()){
 			if(tmp.getPerimetre() < e.getPerimetre()){
+				
 				e.hull.clear();
 				e.ensemble.clear();
 				e = tmp;
+				e.calculPerimetre();
+				cerr << "Hull number : " << tmp.ensemble.size() << " renew\n";
+				cerr << "tmp : " << tmp << "\n";
 			}
 			break;
 		}

@@ -24,8 +24,7 @@ void Front::setCurrent(Ensemble e){
 void Front::removePoint(){
 	unsigned int sizeHull = current.hull.size() -1;
 
-	if(current.ensemble.size() > 3){
-		cerr << "current.ensemble.size() ?! " << current.ensemble.size() << "\n";
+	if(current.ensemble.size() > 4){
 		Ensemble best;
 		best.setPerimetreToMax();
 		for(unsigned int i = 0; i < sizeHull; ++i){
@@ -37,6 +36,7 @@ void Front::removePoint(){
 				best = tmp;
 			}
 		}
+
 		current.ensemble.clear();
 		current.hull.clear();
 		if(best.getPerimetre() != numeric_limits<double>::max()){
@@ -61,7 +61,7 @@ void Front::addPoint(){
 
 void Front::constructionFirstPareto(){
 
-	while(current.ensemble.size() > 3){
+	while(current.ensemble.size() > 4){
 		removePoint();
 	}
 	/*
