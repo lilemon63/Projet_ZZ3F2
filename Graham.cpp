@@ -21,19 +21,21 @@ Point * Graham::pivot;
 unsigned int Graham::posPivot;
 
 void Graham::selectionPivot(Ensemble & e){
-	
-    pivot = e.getFirst();
+    pivot = Ensemble::points[e.ensemble[0]];
+    posPivot = e.ensemble[0];
     // On prends le point avec l'ordonnée la plus basse.
     // Si plusieurs points on l'ordonnée la plus basse, on selectionne alors l'abscisse
-    for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
+    for(unsigned int pos : e.ensemble){
+    //for(vector<unsigned int>::iterator it = e.ensemble.begin(); it != e.ensemble.end(); ++it){
 
-        Point * p = Ensemble::points[*it];
+        Point * p = Ensemble::points[pos];
 
         if( p->y < pivot->y || (p->y == pivot->y && p->x < pivot->x)){ // en bas à gauche
             pivot = p;
-            posPivot = *it;
+            posPivot = pos;
         }
     }
+    
 }
 
 double Graham::produitVectoriel(Point * p1, Point * p2, Point * p3){

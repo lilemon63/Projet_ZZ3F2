@@ -61,7 +61,7 @@ void Front::addPoint(){
 
 void Front::constructionFirstPareto(){
 
-	while(current.ensemble.size() > 70){
+	while(current.ensemble.size() > 3){
 		removePoint();
 	}
 	/*
