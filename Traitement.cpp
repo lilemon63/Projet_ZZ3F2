@@ -108,7 +108,7 @@ void Traitement::localSearch_v2(unsigned int iter,  Front & f){
 
 void Traitement::testerFront(Front & f, Ensemble tmp){
 	tmp.calculPerimetre();
-	for(Ensemble e : f.lstEnsemble){
+	for(Ensemble & e : f.lstEnsemble){
 		if(e.ensemble.size() == tmp.ensemble.size()){
 			if(tmp.getPerimetre() < e.getPerimetre()){
 				
@@ -117,7 +117,7 @@ void Traitement::testerFront(Front & f, Ensemble tmp){
 				e = tmp;
 				e.calculPerimetre();
 				cerr << "Hull number : " << tmp.ensemble.size() << " renew\n";
-				cerr << "tmp : " << tmp << "\n";
+				
 			}
 			break;
 		}

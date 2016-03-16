@@ -103,15 +103,6 @@ void Graham::findHull(Ensemble & e){
     }
 
 
-    if(e.ensemble.size() == 51)
-    {
-        cout << "kookoo presque" << endl;
-    }
-    if(e.ensemble.size() == 4)
-    {
-        cout << "kookoo" << endl;
-    }
-
 
     vector<unsigned int>::iterator itPivot = v.begin()+posPivotInEnsemble;
     v.erase(itPivot);
@@ -151,10 +142,6 @@ void Graham::findHull(Ensemble & e){
     }
     //cout << e.ensemble[posPivotInEnsemble] << endl;
 
-    if(e.ensemble.size() == 4)
-    {
-        cout << "kookoo 2" << endl;
-    }
 
 }
 
@@ -180,8 +167,9 @@ Ensemble Graham::traiter(vector<unsigned int> points){
 Ensemble Graham::removePoint( Ensemble & e, unsigned int pos){
 
     Ensemble tmp = e;
-    
-    tmp.ensemble.erase(tmp.ensemble.begin() + pos);
+    unsigned int posInEnsemble = 0;
+    while(tmp.ensemble[posInEnsemble] != tmp.hull[pos]) ++posInEnsemble;
+    tmp.ensemble.erase(tmp.ensemble.begin() + posInEnsemble);
     
     return traiter(tmp.ensemble);
     
