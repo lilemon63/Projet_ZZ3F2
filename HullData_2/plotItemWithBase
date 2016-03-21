@@ -1,0 +1,12 @@
+if (!exists("filename")) filename='bestHullWith003.dat'
+
+#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
+
+set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
+set style line 2 lc 9
+
+plot 'basePoints.dat' index 0 lc 9 notitle, \
+		filename index 0 lc 1 notitle, \
+		filename index 1 with linespoints ls 1 notitle
+     		       
+pause -1

@@ -1,0 +1,10 @@
+
+
+set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
+set style line 2 lc 9 lt 1 lw 2 pt 7 ps 1.5   # --- blue
+
+plot 	p1 index 0 with linespoints ls 2 notitle, \
+		p2 index 0 with linespoints ls 1 notitle
+		
+#plot "pareto.dat" index 0  with linespoints ls 1  notitle
+pause -1
